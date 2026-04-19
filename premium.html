@@ -507,6 +507,22 @@
                  glowPulseCard 3.5s ease-in-out 900ms infinite;
     }
 
+    /* EMBER CANVAS + PAGE EXIT */
+    #emberCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body {
+      transition: opacity 180ms ease-out, transform 180ms ease-out;
+    }
+    body.page-out {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+
     /* RESPONSIVE */
     @media (max-width: 640px) {
       nav { padding: 16px 20px; }
@@ -519,6 +535,7 @@
 <body>
 
   <div class="halo-bg" aria-hidden="true"></div>
+  <canvas id="emberCanvas" aria-hidden="true"></canvas>
 
   <nav>
     <a href="/" class="logo">Kynkr</a>
@@ -642,6 +659,86 @@
       <a href="mailto:contact@kynkr.app">Contact</a>
     </div>
   </footer>
+
+  <script>
+    // ══ EMBER PARTICLES (flammes ambient, vanilla canvas, 0 dep) ══
+    (() => {
+      const canvas = document.getElementById('emberCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+      window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+
+      const MAX = Math.min(18, Math.floor(W / 90));
+      const particles = [];
+
+      function spawn() {
+        return {
+          x: Math.random() * W,
+          y: H + 10,
+          vy: 0.3 + Math.random() * 0.9,
+          vx: (Math.random() - 0.5) * 0.25,
+          r: 1.2 + Math.random() * 2.2,
+          life: 0,
+          maxLife: 260 + Math.random() * 180,
+          hue: Math.random() < 0.5 ? 'primary' : 'secondary',
+        };
+      }
+
+      for (let i = 0; i < MAX; i++) {
+        const p = spawn();
+        p.y = Math.random() * H;
+        p.life = Math.random() * p.maxLife;
+        particles.push(p);
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, W, H);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.y -= p.vy;
+          p.x += p.vx;
+          p.life++;
+          const t = p.life / p.maxLife;
+          const alpha = t < 0.15 ? t / 0.15 : (1 - t) * 0.85;
+          const color = p.hue === 'primary' ? '237,75,97' : '254,110,68';
+          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+          glow.addColorStop(0, `rgba(${color},${alpha * 0.9})`);
+          glow.addColorStop(0.4, `rgba(${color},${alpha * 0.3})`);
+          glow.addColorStop(1, `rgba(${color},0)`);
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = `rgba(${color},${alpha})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          if (p.life > p.maxLife || p.y < -10) particles[i] = spawn();
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    })();
+
+    // ══ PAGE EXIT — fade flamme (180ms) sur navigation interne ══
+    (() => {
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        if (a.target === '_blank') return;
+        e.preventDefault();
+        document.body.classList.add('page-out');
+        setTimeout(() => { window.location.href = href; }, 180);
+      });
+    })();
+  </script>
 
 </body>
 </html>
