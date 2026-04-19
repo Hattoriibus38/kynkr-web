@@ -6,25 +6,47 @@
   <title>Kynkr Premium — Débloquez tout le potentiel</title>
   <meta name="description" content="Passe en Premium ou VIP pour débloquer toutes les fonctionnalités de Kynkr : messagerie illimitée, galerie étendue, kamasutra favoris, thèmes exclusifs." />
   <meta name="kynkr-redirect" content="kynkr://premium-activated" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg: #1a0f1e;
-      --card: #241428;
+      --card-verre: rgba(36,20,40,0.85);
+      --card-alt: rgba(45,25,52,0.9);
       --primary: #ed4b61;
       --secondary: #fe6e44;
-      --text: #f0e6f6;
-      --muted: #9b8aab;
-      --border: rgba(255,255,255,0.08);
+      --primary-dark: #c9184a;
+      --text: #f4e0f0;
+      --text-sec: #b0a0b5;
+      --muted: #6a5570;
+      --border: rgba(255,255,255,0.06);
+      --border-strong: rgba(255,255,255,0.12);
       --gold: #f0a500;
+      --gold-amber: #e07b00;
     }
 
-    body {
+    html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      line-height: 1.6;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    /* HALO AMBIANCE */
+    .halo-bg {
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(237,75,97,0.18), transparent 60%),
+        radial-gradient(ellipse 50% 30% at 80% 30%, rgba(254,110,68,0.12), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 80%, rgba(201,24,74,0.10), transparent 60%);
+      filter: blur(30px);
     }
 
     /* NAV */
@@ -36,160 +58,239 @@
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      background: rgba(26,15,30,0.95);
-      backdrop-filter: blur(12px);
+      background: rgba(26,15,30,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 100;
     }
 
     .logo {
-      font-family: 'Georgia', serif;
-      font-size: 22px;
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       text-transform: uppercase;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-decoration: none;
     }
 
     nav a {
-      color: var(--muted);
+      color: var(--text-sec);
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
       transition: color 0.2s;
     }
-
     nav a:hover { color: var(--text); }
+
+    /* STEP CHIP */
+    .step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(237,75,97,0.4);
+      background: rgba(237,75,97,0.1);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .step-chip::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px rgba(237,75,97,0.8);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+
+    .step-chip.gold {
+      border-color: rgba(240,165,0,0.4);
+      background: rgba(240,165,0,0.1);
+      color: var(--gold);
+    }
+    .step-chip.gold::before {
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(240,165,0,0.8);
+    }
+
+    /* ACCENT BAR */
+    .accent-bar {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 1px;
+      margin: 20px auto 32px;
+    }
 
     /* HERO */
     .hero {
       text-align: center;
-      padding: 80px 20px 40px;
+      padding: 90px 20px 40px;
       max-width: 760px;
       margin: 0 auto;
     }
 
-    .badge {
-      display: inline-block;
-      background: rgba(237,75,97,0.15);
-      border: 1px solid rgba(237,75,97,0.3);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 28px;
-    }
+    .hero .step-chip { margin-bottom: 28px; }
 
     h1 {
-      font-size: clamp(32px, 6vw, 52px);
-      font-weight: 800;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(34px, 6vw, 54px);
+      font-weight: 700;
       line-height: 1.15;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
+      letter-spacing: 2px;
+      margin-bottom: 0;
     }
 
-    h1 span {
+    h1 .accent {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero p {
+    .hero-desc {
       font-size: 17px;
-      color: var(--muted);
+      color: var(--text-sec);
       max-width: 520px;
       margin: 0 auto;
+      line-height: 1.6;
     }
 
     /* PRICING GRID */
     .pricing {
-      max-width: 1100px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 60px 20px 60px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 22px;
       align-items: stretch;
     }
 
     .plan {
-      background: var(--card);
+      background: var(--card-verre);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
+      border-radius: 18px;
+      padding: 34px 28px;
       display: flex;
       flex-direction: column;
-      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
 
-    .plan:hover { border-color: rgba(237,75,97,0.3); }
+    .plan:hover {
+      border-color: rgba(237,75,97,0.3);
+      transform: translateY(-3px);
+    }
 
     .plan.featured {
-      border-color: var(--primary);
-      box-shadow: 0 0 28px rgba(237,75,97,0.25);
-      position: relative;
+      border-color: rgba(237,75,97,0.55);
+      box-shadow: 0 0 40px rgba(237,75,97,0.25);
+      animation: glowPulseCard 3.5s ease-in-out infinite;
     }
 
     .plan.featured::before {
       content: 'LE PLUS CHOISI';
       position: absolute;
-      top: -12px;
+      top: -13px;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
+      font-family: 'Manrope', sans-serif;
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 1.5px;
-      padding: 5px 14px;
+      letter-spacing: 2px;
+      padding: 6px 16px;
       border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(237,75,97,0.5);
     }
 
-    .plan.vip { border-color: rgba(240,165,0,0.4); }
-    .plan.vip:hover { border-color: var(--gold); }
+    .plan.vip {
+      border-color: rgba(240,165,0,0.4);
+    }
+    .plan.vip:hover {
+      border-color: var(--gold);
+      box-shadow: 0 0 32px rgba(240,165,0,0.2);
+    }
 
     .plan-name {
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 12px;
+      color: var(--text-sec);
+      margin-bottom: 14px;
     }
 
-    .plan.featured .plan-name { color: var(--primary); }
-    .plan.vip .plan-name { color: var(--gold); }
+    .plan.featured .plan-name {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .plan.vip .plan-name {
+      background: linear-gradient(135deg, var(--gold), var(--gold-amber));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
     .plan-price {
-      font-size: 32px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 36px;
       font-weight: 800;
       margin-bottom: 4px;
+      letter-spacing: -1px;
     }
 
     .plan-price small {
       font-size: 14px;
       font-weight: 500;
-      color: var(--muted);
+      color: var(--text-sec);
+      letter-spacing: 0;
     }
 
     .plan-sub {
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+    }
+
+    .plan-accent-bar {
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 1px;
+      margin: 0 0 22px;
+    }
+
+    .plan.vip .plan-accent-bar {
+      background: linear-gradient(90deg, var(--gold), var(--gold-amber));
     }
 
     .plan ul {
       list-style: none;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
       flex: 1;
     }
 
     .plan li {
-      padding: 8px 0;
+      padding: 9px 0;
       font-size: 14px;
       color: var(--text);
       display: flex;
@@ -200,7 +301,13 @@
 
     .plan li:last-child { border-bottom: none; }
     .plan li.off { color: var(--muted); }
-    .plan li .check { flex-shrink: 0; color: var(--primary); font-weight: 700; }
+    .plan li .check {
+      flex-shrink: 0;
+      color: var(--primary);
+      font-weight: 700;
+      width: 14px;
+      display: inline-block;
+    }
     .plan li.off .check { color: var(--muted); }
     .plan.vip li .check { color: var(--gold); }
 
@@ -210,32 +317,41 @@
       border: none;
       padding: 16px 24px;
       border-radius: 12px;
-      font-size: 15px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 14px;
       font-weight: 700;
+      letter-spacing: 0.5px;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
       text-align: center;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.3s;
+      box-shadow: 0 0 24px rgba(237,75,97,0.25);
     }
-
     .btn-premium:hover {
-      opacity: 0.92;
+      opacity: 0.94;
       transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(237,75,97,0.5);
     }
 
     .plan.vip .btn-premium {
-      background: linear-gradient(135deg, var(--gold), #e07b00);
+      background: linear-gradient(135deg, var(--gold), var(--gold-amber));
+      box-shadow: 0 0 24px rgba(240,165,0,0.3);
+    }
+    .plan.vip .btn-premium:hover {
+      box-shadow: 0 0 40px rgba(240,165,0,0.55);
     }
 
     .btn-free {
       background: transparent;
       color: var(--muted);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-strong);
       padding: 16px 24px;
       border-radius: 12px;
-      font-size: 14px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px;
       font-weight: 600;
+      letter-spacing: 0.3px;
       text-align: center;
       cursor: default;
     }
@@ -244,46 +360,80 @@
     .faq {
       max-width: 760px;
       margin: 0 auto;
-      padding: 40px 20px 80px;
+      padding: 40px 20px 60px;
+    }
+
+    .faq .section-head {
+      text-align: center;
+      margin-bottom: 36px;
     }
 
     .faq h2 {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      text-align: center;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin: 0;
     }
 
-    .faq > p {
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 40px;
+    .faq .section-head p {
+      color: var(--text-sec);
+      margin-top: 10px;
+      font-size: 15px;
     }
 
     .faq-item {
-      background: var(--card);
+      background: var(--card-verre);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
+      border-radius: 14px;
+      padding: 22px 26px;
       margin-bottom: 12px;
+      transition: border-color 0.3s;
     }
 
+    .faq-item:hover { border-color: rgba(237,75,97,0.3); }
+
     .faq-item h3 {
-      font-size: 15px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
       color: var(--text);
     }
 
     .faq-item p {
-      color: var(--muted);
+      color: var(--text-sec);
       font-size: 14px;
+      line-height: 1.6;
     }
+
+    /* DOTS DÉCORATIFS */
+    .dots {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin: 10px 0 0;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px rgba(237,75,97,0.7);
+      animation: dotPulse 2.2s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.3s; }
+    .dot:nth-child(3) { animation-delay: 0.6s; }
+    .dot:nth-child(4) { animation-delay: 0.9s; }
 
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
-      padding: 40px;
+      padding: 40px 20px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
@@ -292,26 +442,63 @@
     footer a {
       color: var(--muted);
       text-decoration: none;
-      margin: 0 12px;
+      margin: 0 14px;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--primary); }
+
+    .footer-links { margin-top: 14px; }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 10px;
     }
 
-    footer a:hover { color: var(--text); }
+    /* ANIMATIONS */
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(0.85); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
 
-    .footer-links { margin-top: 12px; }
+    @keyframes glowPulseCard {
+      0%, 100% { box-shadow: 0 0 30px rgba(237,75,97,0.22); }
+      50% { box-shadow: 0 0 52px rgba(237,75,97,0.42); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 70px 16px 30px; }
+      .pricing { padding: 40px 16px; }
+      .plan.featured::before { font-size: 9px; padding: 5px 12px; }
+    }
   </style>
 </head>
 <body>
 
+  <div class="halo-bg" aria-hidden="true"></div>
+
   <nav>
     <a href="/" class="logo">Kynkr</a>
-    <a href="/">Retour à l'accueil</a>
+    <a href="/">← Retour</a>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="badge">Débloquez tout le potentiel</div>
-    <h1>Kynkr <span>Premium</span></h1>
-    <p>Choisis ton plan. Annulation possible à tout moment. 2 jours d'essai gratuit sans carte bancaire requise.</p>
+    <div class="step-chip">Débloquez tout le potentiel</div>
+    <h1>Kynkr <span class="accent">Premium</span></h1>
+    <div class="accent-bar"></div>
+    <p class="hero-desc">Choisis ton plan. Annulation possible à tout moment. 2 jours d'essai gratuit sans carte bancaire.</p>
+    <div class="dots" aria-hidden="true">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
   </section>
 
   <!-- PRICING -->
@@ -322,6 +509,7 @@
       <div class="plan-name">Free</div>
       <div class="plan-price">0 €<small>/toujours</small></div>
       <div class="plan-sub">Pour démarrer l'aventure</div>
+      <div class="plan-accent-bar"></div>
       <ul>
         <li><span class="check">✓</span> Profil complet</li>
         <li><span class="check">✓</span> 20 messages couple / jour</li>
@@ -339,6 +527,7 @@
       <div class="plan-name">Premium</div>
       <div class="plan-price">12,99 €<small>/mois</small></div>
       <div class="plan-sub">ou 79,99 €/an (économise 35 %)</div>
+      <div class="plan-accent-bar"></div>
       <ul>
         <li><span class="check">✓</span> Tout Free, en mieux</li>
         <li><span class="check">✓</span> Messagerie couple illimitée</li>
@@ -349,7 +538,7 @@
         <li><span class="check">✓</span> 2 thèmes premium</li>
       </ul>
       <!-- TODO: remplacer par le vrai lien Stripe Payment Link mensuel -->
-      <a href="PASTE_STRIPE_PREMIUM_MONTHLY_LINK" class="btn-premium" style="margin-bottom:8px;">12,99 €/mois</a>
+      <a href="PASTE_STRIPE_PREMIUM_MONTHLY_LINK" class="btn-premium" style="margin-bottom:10px;">12,99 €/mois</a>
       <!-- TODO: remplacer par le vrai lien Stripe Payment Link annuel -->
       <a href="PASTE_STRIPE_PREMIUM_YEARLY_LINK" class="btn-premium">79,99 €/an</a>
     </div>
@@ -359,13 +548,14 @@
       <div class="plan-name">VIP à vie</div>
       <div class="plan-price">249 €<small>/à vie</small></div>
       <div class="plan-sub">Un paiement unique, pour toujours</div>
+      <div class="plan-accent-bar"></div>
       <ul>
         <li><span class="check">✓</span> Tout Premium, en illimité</li>
         <li><span class="check">✓</span> Galerie 500 photos</li>
         <li><span class="check">✓</span> 100 souhaits</li>
         <li><span class="check">✓</span> Tous les thèmes premium</li>
         <li><span class="check">✓</span> Badge VIP permanent</li>
-        <li><span class="check">✓</span> Accès prioritaire nouvelles features</li>
+        <li><span class="check">✓</span> Accès prioritaire features</li>
         <li><span class="check">✓</span> Support prioritaire</li>
       </ul>
       <!-- TODO: remplacer par le vrai lien Stripe Payment Link VIP -->
@@ -376,8 +566,11 @@
 
   <!-- FAQ -->
   <section class="faq">
-    <h2>Questions fréquentes</h2>
-    <p>Tout ce que tu dois savoir avant de passer Premium.</p>
+    <div class="section-head">
+      <h2>Questions fréquentes</h2>
+      <div class="accent-bar"></div>
+      <p>Tout ce que tu dois savoir avant de passer Premium.</p>
+    </div>
 
     <div class="faq-item">
       <h3>Y a-t-il un essai gratuit ?</h3>
@@ -385,28 +578,30 @@
     </div>
 
     <div class="faq-item">
-      <h3>Je suis beta testeur. C'est quoi le grandfathering ?</h3>
+      <h3>Je suis beta testeur — grandfathering ?</h3>
       <p>Les beta testeurs gardent leur prix de lancement (12,99 €/mois) à vie. Badge « Beta testeur » visible sur le profil.</p>
     </div>
 
     <div class="faq-item">
-      <h3>Comment annuler mon abonnement ?</h3>
-      <p>Stripe gère tout. Tu peux annuler depuis ton dashboard Stripe ou directement depuis l'app (C18.4).</p>
+      <h3>Comment annuler ?</h3>
+      <p>Stripe gère tout. Annulation possible depuis ton dashboard Stripe ou directement depuis l'app.</p>
     </div>
 
     <div class="faq-item">
       <h3>Mes données sont-elles sécurisées ?</h3>
-      <p>Paiements via Stripe (conformité PCI-DSS). Données utilisateur chiffrées en base. Aucune information sensible n'est stockée côté client.</p>
+      <p>Paiements via Stripe (conformité PCI-DSS). Données utilisateur chiffrées en base. Aucune information sensible stockée côté client.</p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
+    <div class="footer-logo">Kynkr</div>
     <div>© 2026 Kynkr — Tous droits réservés</div>
     <div class="footer-links">
       <a href="/">Accueil</a>
       <a href="#">CGU</a>
-      <a href="#">Politique de confidentialité</a>
+      <a href="#">Confidentialité</a>
+      <a href="mailto:contact@kynkr.app">Contact</a>
     </div>
   </footer>
 

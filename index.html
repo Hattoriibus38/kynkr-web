@@ -5,26 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kynkr — L'app pour les couples qui s'assument</title>
   <meta name="description" content="Kynkr est l'application intime pour les couples qui veulent explorer, se connecter et s'épanouir ensemble." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
- 
+
     :root {
       --bg: #1a0f1e;
-      --card: #241428;
+      --card-verre: rgba(36,20,40,0.85);
+      --card-alt: rgba(45,25,52,0.9);
       --primary: #ed4b61;
       --secondary: #fe6e44;
-      --text: #f0e6f6;
-      --muted: #9b8aab;
-      --border: rgba(255,255,255,0.08);
+      --primary-dark: #c9184a;
+      --text: #f4e0f0;
+      --text-sec: #b0a0b5;
+      --muted: #6a5570;
+      --border: rgba(255,255,255,0.06);
+      --border-strong: rgba(255,255,255,0.12);
+      --glow-primary: rgba(237,75,97,0.15);
+      --glow-strong: rgba(237,75,97,0.4);
     }
- 
-    body {
+
+    html, body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      line-height: 1.6;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
     }
- 
+
+    /* HALO AMBIANCE — toile de fond fixed */
+    .halo-bg {
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(237,75,97,0.18), transparent 60%),
+        radial-gradient(ellipse 50% 30% at 80% 30%, rgba(254,110,68,0.12), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 80%, rgba(201,24,74,0.10), transparent 60%);
+      filter: blur(30px);
+    }
+
     /* NAV */
     nav {
       display: flex;
@@ -34,289 +57,366 @@
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      background: rgba(26,15,30,0.95);
-      backdrop-filter: blur(12px);
+      background: rgba(26,15,30,0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       z-index: 100;
     }
- 
+
     .logo {
-      font-family: 'Georgia', serif;
-      font-size: 22px;
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: 4px;
+      letter-spacing: 5px;
       text-transform: uppercase;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-    }
- 
-    nav a {
-      color: var(--muted);
+      background-clip: text;
       text-decoration: none;
-      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
       transition: color 0.2s;
     }
- 
     nav a:hover { color: var(--text); }
- 
+
+    /* STEP CHIP */
+    .step-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(237,75,97,0.4);
+      background: rgba(237,75,97,0.1);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .step-chip::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 8px rgba(237,75,97,0.8);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+
+    /* ACCENT BAR */
+    .accent-bar {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 1px;
+      margin: 20px auto 32px;
+    }
+
     /* HERO */
     .hero {
       text-align: center;
-      padding: 100px 20px 80px;
-      max-width: 700px;
+      padding: 110px 20px 60px;
+      max-width: 760px;
       margin: 0 auto;
+      position: relative;
     }
- 
-    .badge {
-      display: inline-block;
-      background: rgba(237,75,97,0.15);
-      border: 1px solid rgba(237,75,97,0.3);
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 28px;
-    }
- 
+
+    .hero .step-chip { margin-bottom: 28px; }
+
     h1 {
-      font-size: clamp(32px, 6vw, 56px);
-      font-weight: 800;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(34px, 6vw, 56px);
+      font-weight: 700;
       line-height: 1.15;
-      margin-bottom: 20px;
-      letter-spacing: -1px;
+      letter-spacing: 1px;
+      margin-bottom: 0;
     }
- 
-    h1 span {
+
+    h1 .accent {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
- 
-    .hero p {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 500px;
+
+    .hero-desc {
+      font-family: 'Manrope', sans-serif;
+      font-size: 17px;
+      color: var(--text-sec);
+      max-width: 520px;
       margin: 0 auto 40px;
+      line-height: 1.6;
     }
- 
+
+    /* CTAs */
     .cta-group {
       display: flex;
-      gap: 12px;
+      gap: 14px;
       justify-content: center;
       flex-wrap: wrap;
     }
- 
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       border: none;
-      padding: 14px 28px;
+      padding: 15px 30px;
       border-radius: 12px;
+      font-family: 'Manrope', sans-serif;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.3px;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
-      transition: opacity 0.2s, transform 0.1s;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.3s;
+      box-shadow: 0 0 24px rgba(237,75,97,0.25);
+      animation: glowPulse 3s ease-in-out infinite;
     }
- 
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
- 
+    .btn-primary:hover {
+      opacity: 0.94;
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(237,75,97,0.5);
+    }
+
     .btn-secondary {
-      background: var(--card);
+      background: var(--card-verre);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       color: var(--text);
-      border: 1px solid var(--border);
-      padding: 14px 28px;
+      border: 1px solid var(--border-strong);
+      padding: 15px 30px;
       border-radius: 12px;
+      font-family: 'Manrope', sans-serif;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.2s;
     }
- 
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); }
- 
+    .btn-secondary:hover {
+      border-color: rgba(237,75,97,0.4);
+      background: rgba(237,75,97,0.06);
+    }
+
+    /* DOTS DÉCORATIFS */
+    .dots {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin: 60px 0 30px;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px rgba(237,75,97,0.7);
+      animation: dotPulse 2.2s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.3s; }
+    .dot:nth-child(3) { animation-delay: 0.6s; }
+    .dot:nth-child(4) { animation-delay: 0.9s; }
+
+    /* SECTION TITLE */
+    .section-title {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+    .section-title .step-chip { margin-bottom: 20px; }
+    .section-title h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin: 0;
+    }
+    .section-title > p {
+      font-family: 'Manrope', sans-serif;
+      color: var(--text-sec);
+      font-size: 15px;
+      max-width: 500px;
+      margin: 12px auto 0;
+    }
+
     /* FEATURES */
     .features {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 80px 20px;
+      padding: 20px 20px 80px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
     }
- 
+
     .feature-card {
-      background: var(--card);
+      background: var(--card-verre);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 28px;
-      transition: border-color 0.2s;
+      padding: 32px 28px;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
- 
-    .feature-card:hover { border-color: rgba(237,75,97,0.3); }
- 
+    .feature-card:hover {
+      border-color: rgba(237,75,97,0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(237,75,97,0.18);
+    }
+
     .feature-icon {
-      font-size: 32px;
-      margin-bottom: 14px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      background: rgba(237,75,97,0.12);
+      border: 1px solid rgba(237,75,97,0.3);
+      font-size: 22px;
     }
- 
+
     .feature-card h3 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
- 
+
     .feature-card p {
-      color: var(--muted);
+      font-family: 'Manrope', sans-serif;
+      color: var(--text-sec);
       font-size: 14px;
       line-height: 1.6;
     }
- 
-    /* CHANGELOG */
-    .changelog {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 80px 20px;
-    }
- 
-    .changelog h2 {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
- 
-    .changelog > p {
-      color: var(--muted);
-      margin-bottom: 48px;
-    }
- 
-    .changelog-item {
-      border-left: 2px solid var(--border);
-      padding-left: 28px;
-      margin-bottom: 40px;
-      position: relative;
-    }
- 
-    .changelog-item::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 6px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-    }
- 
-    .changelog-date {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 6px;
-    }
- 
-    .changelog-item h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
- 
-    .changelog-item p {
-      color: var(--muted);
-      font-size: 14px;
-    }
- 
+
     /* FOOTER */
     footer {
       border-top: 1px solid var(--border);
-      padding: 40px;
+      padding: 40px 20px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
+      font-family: 'Manrope', sans-serif;
     }
- 
+
     footer a {
       color: var(--muted);
       text-decoration: none;
-      margin: 0 12px;
+      margin: 0 14px;
+      transition: color 0.2s;
     }
- 
-    footer a:hover { color: var(--text); }
- 
-    .footer-links { margin-top: 12px; }
- 
-    /* SECTION TITLE */
-    .section-title {
-      text-align: center;
-      padding: 0 20px 40px;
+    footer a:hover { color: var(--primary); }
+
+    .footer-links { margin-top: 14px; }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 10px;
     }
- 
-    .section-title h2 {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 8px;
+
+    /* ANIMATIONS */
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(0.85); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 1; }
     }
- 
-    .section-title p {
-      color: var(--muted);
-      font-size: 16px;
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 24px rgba(237,75,97,0.25); }
+      50% { box-shadow: 0 0 40px rgba(237,75,97,0.45); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 70px 16px 40px; }
+      .cta-group { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; }
     }
   </style>
 </head>
 <body>
- 
+
+  <div class="halo-bg" aria-hidden="true"></div>
+
   <nav>
-    <div class="logo">Kynkr</div>
+    <a href="/" class="logo">Kynkr</a>
     <a href="#nouveautes">Nouveautés</a>
   </nav>
- 
+
   <!-- HERO -->
   <section class="hero">
-    <div class="badge">Beta bientôt disponible</div>
-    <h1>L'app pour les couples<br/>qui <span>s'assument</span></h1>
-    <p>Explorez, connectez-vous et épanouissez-vous ensemble. Kynkr est l'espace intime conçu pour les couples modernes.</p>
+    <div class="step-chip">Beta bientôt disponible</div>
+    <h1>L'app pour les couples<br/>qui <span class="accent">s'assument</span></h1>
+    <div class="accent-bar"></div>
+    <p class="hero-desc">Explorez, connectez-vous et épanouissez-vous ensemble. Kynkr est l'espace intime conçu pour les couples modernes.</p>
     <div class="cta-group">
-      <a href="/cdn-cgi/l/email-protection#b0d3dfdec4d1d3c4f0dbc9dedbc29ed1c0c0" class="btn-primary">Rejoindre la beta</a>
+      <a href="/premium" class="btn-primary">Découvrir Premium</a>
       <a href="#nouveautes" class="btn-secondary">Voir les nouveautés</a>
     </div>
+    <div class="dots" aria-hidden="true">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
   </section>
- 
+
   <!-- TEASING -->
   <div class="section-title" id="nouveautes">
+    <div class="step-chip">En préparation</div>
     <h2>Quelque chose se prépare</h2>
+    <div class="accent-bar"></div>
     <p>Les fonctionnalités seront révélées au lancement de la beta.</p>
   </div>
- 
+
   <section class="features">
-    <div class="feature-card" style="text-align:center; padding: 40px 28px;">
+    <div class="feature-card">
       <div class="feature-icon">🔒</div>
       <h3>Bientôt révélé</h3>
       <p>Rejoins la liste d'attente pour être parmi les premiers à découvrir ce que Kynkr a préparé pour toi.</p>
     </div>
-    <div class="feature-card" style="text-align:center; padding: 40px 28px;">
+    <div class="feature-card">
       <div class="feature-icon">💌</div>
       <h3>Accès beta anticipé</h3>
       <p>Les premiers inscrits bénéficieront d'un accès exclusif et d'avantages réservés aux pionniers.</p>
     </div>
-    <div class="feature-card" style="text-align:center; padding: 40px 28px;">
+    <div class="feature-card">
       <div class="feature-icon">✨</div>
-      <h3>Conçu pour les couples — mais pas seulement</h3>
+      <h3>Conçu pour les couples</h3>
       <p>Que tu sois en couple, célibataire ou libertin, Kynkr a quelque chose pour toi. La suite arrive bientôt.</p>
     </div>
   </section>
- 
+
   <!-- FOOTER -->
   <footer>
+    <div class="footer-logo">Kynkr</div>
     <div>© 2026 Kynkr — Tous droits réservés</div>
     <div class="footer-links">
-      <a href="/cdn-cgi/l/email-protection#aac9c5c4decbc9deeac1d3c4c1d884cbdada">Contact</a>
+      <a href="/premium">Premium</a>
       <a href="#">CGU</a>
-      <a href="#">Politique de confidentialité</a>
+      <a href="#">Confidentialité</a>
+      <a href="mailto:contact@kynkr.app">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
