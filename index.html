@@ -340,8 +340,30 @@
     }
 
     @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 24px rgba(237,75,97,0.25); }
-      50% { box-shadow: 0 0 40px rgba(237,75,97,0.45); }
+      0%, 100% { box-shadow: 0 0 24px rgba(237,75,97,0.25); transform: scale(1); }
+      50% { box-shadow: 0 0 44px rgba(237,75,97,0.55); transform: scale(1.03); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim-in {
+      opacity: 0;
+      animation: fadeSlideUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .anim-in.d1 { animation-delay: 60ms; }
+    .anim-in.d2 { animation-delay: 140ms; }
+    .anim-in.d3 { animation-delay: 220ms; }
+    .anim-in.d4 { animation-delay: 300ms; }
+    .anim-in.d5 { animation-delay: 380ms; }
+
+    /* Boutons press scale */
+    .btn-primary:active,
+    .btn-secondary:active {
+      transform: scale(0.96);
+      transition: transform 0.12s ease-out;
     }
 
     /* RESPONSIVE */
@@ -364,15 +386,15 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="step-chip">Beta bientôt disponible</div>
-    <h1>L'app pour les couples<br/>qui <span class="accent">s'assument</span></h1>
-    <div class="accent-bar"></div>
-    <p class="hero-desc">Explorez, connectez-vous et épanouissez-vous ensemble. Kynkr est l'espace intime conçu pour les couples modernes.</p>
-    <div class="cta-group">
+    <div class="step-chip anim-in">Beta bientôt disponible</div>
+    <h1 class="anim-in d1">L'app pour les couples<br/>qui <span class="accent">s'assument</span></h1>
+    <div class="accent-bar anim-in d2"></div>
+    <p class="hero-desc anim-in d3">Explorez, connectez-vous et épanouissez-vous ensemble. Kynkr est l'espace intime conçu pour les couples modernes.</p>
+    <div class="cta-group anim-in d4">
       <a href="/premium" class="btn-primary">Découvrir Premium</a>
       <a href="#nouveautes" class="btn-secondary">Voir les nouveautés</a>
     </div>
-    <div class="dots" aria-hidden="true">
+    <div class="dots anim-in d5" aria-hidden="true">
       <div class="dot"></div>
       <div class="dot"></div>
       <div class="dot"></div>
@@ -389,18 +411,32 @@
   </div>
 
   <section class="features">
-    <div class="feature-card">
-      <div class="feature-icon">🔒</div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <linearGradient id="kGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ed4b61"/>
+          <stop offset="100%" stop-color="#fe6e44"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="feature-card anim-in d1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+      </div>
       <h3>Bientôt révélé</h3>
       <p>Rejoins la liste d'attente pour être parmi les premiers à découvrir ce que Kynkr a préparé pour toi.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">💌</div>
+    <div class="feature-card anim-in d2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zM2 8l10 7 10-7"/></svg>
+      </div>
       <h3>Accès beta anticipé</h3>
       <p>Les premiers inscrits bénéficieront d'un accès exclusif et d'avantages réservés aux pionniers.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">✨</div>
+    <div class="feature-card anim-in d3">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
       <h3>Conçu pour les couples</h3>
       <p>Que tu sois en couple, célibataire ou libertin, Kynkr a quelque chose pour toi. La suite arrive bientôt.</p>
     </div>
