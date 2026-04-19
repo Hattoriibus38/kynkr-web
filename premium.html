@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kynkr Premium — Débloquez tout le potentiel</title>
+  <meta name="description" content="Passe en Premium ou VIP pour débloquer toutes les fonctionnalités de Kynkr : messagerie illimitée, galerie étendue, kamasutra favoris, thèmes exclusifs." />
+  <meta name="kynkr-redirect" content="kynkr://premium-activated" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1a0f1e;
+      --card: #241428;
+      --primary: #ed4b61;
+      --secondary: #fe6e44;
+      --text: #f0e6f6;
+      --muted: #9b8aab;
+      --border: rgba(255,255,255,0.08);
+      --gold: #f0a500;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(26,15,30,0.95);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Georgia', serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 40px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(237,75,97,0.15);
+      border: 1px solid rgba(237,75,97,0.3);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* PRICING GRID */
+    .pricing {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .plan {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .plan:hover { border-color: rgba(237,75,97,0.3); }
+
+    .plan.featured {
+      border-color: var(--primary);
+      box-shadow: 0 0 28px rgba(237,75,97,0.25);
+      position: relative;
+    }
+
+    .plan.featured::before {
+      content: 'LE PLUS CHOISI';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 5px 14px;
+      border-radius: 10px;
+    }
+
+    .plan.vip { border-color: rgba(240,165,0,0.4); }
+    .plan.vip:hover { border-color: var(--gold); }
+
+    .plan-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .plan.featured .plan-name { color: var(--primary); }
+    .plan.vip .plan-name { color: var(--gold); }
+
+    .plan-price {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .plan-price small {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .plan-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .plan ul {
+      list-style: none;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+
+    .plan li {
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .plan li:last-child { border-bottom: none; }
+    .plan li.off { color: var(--muted); }
+    .plan li .check { flex-shrink: 0; color: var(--primary); font-weight: 700; }
+    .plan li.off .check { color: var(--muted); }
+    .plan.vip li .check { color: var(--gold); }
+
+    .btn-premium {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-premium:hover {
+      opacity: 0.92;
+      transform: translateY(-2px);
+    }
+
+    .plan.vip .btn-premium {
+      background: linear-gradient(135deg, var(--gold), #e07b00);
+    }
+
+    .btn-free {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      cursor: default;
+    }
+
+    /* FAQ */
+    .faq {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .faq h2 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .faq > p {
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+
+    .faq-item h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .faq-item p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      margin: 0 12px;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    .footer-links { margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Kynkr</a>
+    <a href="/">Retour à l'accueil</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">Débloquez tout le potentiel</div>
+    <h1>Kynkr <span>Premium</span></h1>
+    <p>Choisis ton plan. Annulation possible à tout moment. 2 jours d'essai gratuit sans carte bancaire requise.</p>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+
+    <!-- FREE -->
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">0 €<small>/toujours</small></div>
+      <div class="plan-sub">Pour démarrer l'aventure</div>
+      <ul>
+        <li><span class="check">✓</span> Profil complet</li>
+        <li><span class="check">✓</span> 20 messages couple / jour</li>
+        <li><span class="check">✓</span> Galerie 50 photos</li>
+        <li><span class="check">✓</span> 10 souhaits</li>
+        <li class="off"><span class="check">✕</span> Kamasutra favoris</li>
+        <li class="off"><span class="check">✕</span> Zones inexplorées</li>
+        <li class="off"><span class="check">✕</span> Thèmes premium</li>
+      </ul>
+      <div class="btn-free">Plan actuel</div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="plan featured">
+      <div class="plan-name">Premium</div>
+      <div class="plan-price">12,99 €<small>/mois</small></div>
+      <div class="plan-sub">ou 79,99 €/an (économise 35 %)</div>
+      <ul>
+        <li><span class="check">✓</span> Tout Free, en mieux</li>
+        <li><span class="check">✓</span> Messagerie couple illimitée</li>
+        <li><span class="check">✓</span> Galerie 200 photos</li>
+        <li><span class="check">✓</span> 50 souhaits</li>
+        <li><span class="check">✓</span> Kamasutra favoris</li>
+        <li><span class="check">✓</span> Zones inexplorées</li>
+        <li><span class="check">✓</span> 2 thèmes premium</li>
+      </ul>
+      <!-- TODO: remplacer par le vrai lien Stripe Payment Link mensuel -->
+      <a href="PASTE_STRIPE_PREMIUM_MONTHLY_LINK" class="btn-premium" style="margin-bottom:8px;">12,99 €/mois</a>
+      <!-- TODO: remplacer par le vrai lien Stripe Payment Link annuel -->
+      <a href="PASTE_STRIPE_PREMIUM_YEARLY_LINK" class="btn-premium">79,99 €/an</a>
+    </div>
+
+    <!-- VIP -->
+    <div class="plan vip">
+      <div class="plan-name">VIP à vie</div>
+      <div class="plan-price">249 €<small>/à vie</small></div>
+      <div class="plan-sub">Un paiement unique, pour toujours</div>
+      <ul>
+        <li><span class="check">✓</span> Tout Premium, en illimité</li>
+        <li><span class="check">✓</span> Galerie 500 photos</li>
+        <li><span class="check">✓</span> 100 souhaits</li>
+        <li><span class="check">✓</span> Tous les thèmes premium</li>
+        <li><span class="check">✓</span> Badge VIP permanent</li>
+        <li><span class="check">✓</span> Accès prioritaire nouvelles features</li>
+        <li><span class="check">✓</span> Support prioritaire</li>
+      </ul>
+      <!-- TODO: remplacer par le vrai lien Stripe Payment Link VIP -->
+      <a href="PASTE_STRIPE_VIP_LIFETIME_LINK" class="btn-premium">249 € à vie</a>
+    </div>
+
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>Questions fréquentes</h2>
+    <p>Tout ce que tu dois savoir avant de passer Premium.</p>
+
+    <div class="faq-item">
+      <h3>Y a-t-il un essai gratuit ?</h3>
+      <p>Oui, 2 jours gratuits pour découvrir Premium. Pas de carte bancaire requise.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Je suis beta testeur. C'est quoi le grandfathering ?</h3>
+      <p>Les beta testeurs gardent leur prix de lancement (12,99 €/mois) à vie. Badge « Beta testeur » visible sur le profil.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Comment annuler mon abonnement ?</h3>
+      <p>Stripe gère tout. Tu peux annuler depuis ton dashboard Stripe ou directement depuis l'app (C18.4).</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Mes données sont-elles sécurisées ?</h3>
+      <p>Paiements via Stripe (conformité PCI-DSS). Données utilisateur chiffrées en base. Aucune information sensible n'est stockée côté client.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2026 Kynkr — Tous droits réservés</div>
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="#">CGU</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </footer>
+
+</body>
+</html>
