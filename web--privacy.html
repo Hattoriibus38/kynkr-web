@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politique de confidentialité — Kynkr</title>
+  <meta name="description" content="Politique de confidentialité de l'application Kynkr. Comment nous collectons, utilisons et protégeons vos données personnelles." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1a0f1e;
+      --card-verre: rgba(36,20,40,0.85);
+      --primary: #ed4b61;
+      --secondary: #fe6e44;
+      --text: #f4e0f0;
+      --text-sec: #b0a0b5;
+      --muted: #6a5570;
+      --border: rgba(255,255,255,0.06);
+      --border-strong: rgba(255,255,255,0.12);
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    .halo-bg {
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(237,75,97,0.10), transparent 60%),
+        radial-gradient(ellipse 50% 30% at 80% 30%, rgba(254,110,68,0.07), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 80%, rgba(201,24,74,0.06), transparent 60%);
+      filter: blur(30px);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(26,15,30,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    nav a.nav-link {
+      color: var(--text-sec);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a.nav-link:hover { color: var(--text); }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(237,75,97,0.35);
+      background: rgba(237,75,97,0.08);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: 1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .accent-bar {
+      width: 36px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 1px;
+      margin: 20px auto 0;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 16px;
+    }
+
+    .intro-card {
+      background: var(--card-verre);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      color: var(--text-sec);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .intro-card strong {
+      color: var(--text);
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 16px;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0 20px;
+    }
+
+    p {
+      color: var(--text-sec);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+
+    ul li {
+      color: var(--text-sec);
+      font-size: 14px;
+      padding: 6px 0 6px 20px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      opacity: 0.7;
+    }
+
+    .highlight-box {
+      background: rgba(237,75,97,0.06);
+      border: 1px solid rgba(237,75,97,0.2);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .warning-box {
+      background: rgba(254,110,68,0.06);
+      border: 1px solid rgba(254,110,68,0.2);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 16px 0;
+    }
+
+    .warning-box p {
+      margin: 0;
+      font-size: 13px;
+      color: #c9a070;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-strong);
+    }
+
+    td {
+      padding: 10px 14px;
+      color: var(--text-sec);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    a:hover { opacity: 0.8; }
+
+    .contact-card {
+      background: var(--card-verre);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      margin-top: 48px;
+    }
+
+    .contact-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .contact-card a.email-btn {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: 1px solid rgba(237,75,97,0.4);
+      background: rgba(237,75,97,0.08);
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .contact-card a.email-btn:hover {
+      background: rgba(237,75,97,0.14);
+      border-color: rgba(237,75,97,0.6);
+      opacity: 1;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      margin: 0 14px;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--primary); }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 10px;
+    }
+
+    .footer-links { margin-top: 14px; }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .container { padding: 40px 16px 80px; }
+      table { font-size: 12px; }
+      th, td { padding: 8px 10px; }
+    }
+
+    body { transition: opacity 180ms ease-out, transform 180ms ease-out; }
+    body.page-out { opacity: 0; transform: translateY(-12px); }
+  </style>
+</head>
+<body>
+
+  <div class="halo-bg" aria-hidden="true"></div>
+
+  <nav>
+    <a href="/" class="logo">Kynkr</a>
+    <a href="/" class="nav-link">← Retour</a>
+  </nav>
+
+  <div class="container">
+
+    <div class="page-header">
+      <div class="badge">Légal</div>
+      <h1>Politique de<br/>confidentialité</h1>
+      <div class="accent-bar"></div>
+      <p class="meta">Dernière mise à jour : 20 avril 2026</p>
+    </div>
+
+    <div class="intro-card">
+      <strong>En résumé :</strong> Kynkr collecte uniquement les données nécessaires au fonctionnement de l'application. Vos données intimes ne sont jamais vendues, ni partagées avec des tiers à des fins publicitaires. Vous pouvez accéder, modifier ou supprimer vos données à tout moment depuis l'application.
+    </div>
+
+    <!-- 1. Responsable du traitement -->
+    <div class="section">
+      <h2>1. Responsable du traitement</h2>
+      <div class="section-divider"></div>
+      <p>
+        L'application Kynkr est éditée par <strong>Kylian Hattorii</strong>, développeur indépendant basé en France.<br/>
+        Contact : <a href="mailto:contact@kynkr.app">contact@kynkr.app</a>
+      </p>
+      <p>
+        En tant que responsable de traitement au sens du Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679), nous nous engageons à traiter vos données personnelles dans le respect de la vie privée et de la réglementation applicable.
+      </p>
+    </div>
+
+    <!-- 2. Données collectées -->
+    <div class="section">
+      <h2>2. Données collectées</h2>
+      <div class="section-divider"></div>
+
+      <p><strong style="color: var(--text)">Données d'identification et de compte</strong></p>
+      <ul>
+        <li>Adresse e-mail (inscription et authentification)</li>
+        <li>Numéro de téléphone (vérification OTP, optionnel)</li>
+        <li>Pseudo et date de naissance</li>
+        <li>Photo de profil (optionnel)</li>
+      </ul>
+
+      <p style="margin-top: 16px;"><strong style="color: var(--text)">Données de profil</strong></p>
+      <ul>
+        <li>Genre, orientation sexuelle, statut relationnel</li>
+        <li>Localisation floue (ville ou région — jamais la position GPS précise)</li>
+        <li>Biographie et préférences de style de vie</li>
+        <li>Fuseau horaire et langue</li>
+      </ul>
+
+      <div class="warning-box">
+        <p>⚠️ <strong style="color: #e8c07a;">Données sensibles (Article 9 RGPD) :</strong> Kynkr traite des données relatives à la vie sexuelle et à l'orientation sexuelle. Ces données ne sont collectées qu'avec votre <strong>consentement explicite</strong>, donné lors de l'inscription ou de l'utilisation des fonctionnalités concernées. Vous pouvez retirer ce consentement à tout moment.</p>
+      </div>
+
+      <p style="margin-top: 16px;"><strong style="color: var(--text)">Données d'usage et de couple</strong></p>
+      <ul>
+        <li>Réponses au quiz de compatibilité et préférences intimes</li>
+        <li>Souvenirs, souhaits, défis et journaux (sauvegardés dans votre espace personnel)</li>
+        <li>Messages échangés avec votre partenaire</li>
+        <li>Données du Kamasutra (positions réalisées, notes — optionnel)</li>
+        <li>Profil d'attachement et langue d'amour (optionnel)</li>
+      </ul>
+
+      <p style="margin-top: 16px;"><strong style="color: var(--text)">Données techniques</strong></p>
+      <ul>
+        <li>Adresse IP anonymisée (derniers octets masqués)</li>
+        <li>Type d'appareil, version de l'application</li>
+        <li>Journaux de connexion (conservés 90 jours)</li>
+        <li>Token de notification push (si notifications activées)</li>
+      </ul>
+    </div>
+
+    <!-- 3. Bases légales -->
+    <div class="section">
+      <h2>3. Bases légales du traitement</h2>
+      <div class="section-divider"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Traitement</th>
+            <th>Base légale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Création et gestion du compte</td>
+            <td>Exécution du contrat (CGU)</td>
+          </tr>
+          <tr>
+            <td>Fonctionnalités couple (quiz, souvenirs, messagerie)</td>
+            <td>Exécution du contrat</td>
+          </tr>
+          <tr>
+            <td>Données sensibles (orientation, pratiques)</td>
+            <td>Consentement explicite</td>
+          </tr>
+          <tr>
+            <td>Localisation floue</td>
+            <td>Consentement</td>
+          </tr>
+          <tr>
+            <td>Journaux de sécurité, prévention fraude</td>
+            <td>Intérêt légitime</td>
+          </tr>
+          <tr>
+            <td>Notifications push</td>
+            <td>Consentement</td>
+          </tr>
+          <tr>
+            <td>Statistiques d'usage anonymisées</td>
+            <td>Consentement (opt-in)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4. Sous-traitants -->
+    <div class="section">
+      <h2>4. Sous-traitants et transferts</h2>
+      <div class="section-divider"></div>
+      <p>Kynkr utilise les services tiers suivants pour son fonctionnement :</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Rôle</th>
+            <th>Localisation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Supabase</td>
+            <td>Base de données, authentification, stockage</td>
+            <td>UE (Frankfurt)</td>
+          </tr>
+          <tr>
+            <td>Expo / EAS</td>
+            <td>Build et distribution de l'application</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td>Twilio</td>
+            <td>Envoi de SMS OTP</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td>RevenueCat</td>
+            <td>Gestion des abonnements</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td>Stripe</td>
+            <td>Paiements sécurisés</td>
+            <td>USA</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Les transferts hors UE sont encadrés par des clauses contractuelles types (CCT) conformes au RGPD. Les données hébergées sur Supabase restent dans l'Union Européenne.</p>
+    </div>
+
+    <!-- 5. Durées de conservation -->
+    <div class="section">
+      <h2>5. Durées de conservation</h2>
+      <div class="section-divider"></div>
+      <table>
+        <thead>
+          <tr>
+            <th>Données</th>
+            <th>Durée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Données de compte et profil</td>
+            <td>Jusqu'à suppression du compte + 30 jours</td>
+          </tr>
+          <tr>
+            <td>Messages, souvenirs, journaux</td>
+            <td>Jusqu'à suppression du compte</td>
+          </tr>
+          <tr>
+            <td>Journaux de connexion</td>
+            <td>90 jours (purge automatique)</td>
+          </tr>
+          <tr>
+            <td>Données de facturation</td>
+            <td>10 ans (obligation légale)</td>
+          </tr>
+          <tr>
+            <td>Hash email banni (anti-réinscription)</td>
+            <td>Indéfinie (irréversible, non nominatif)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Après suppression du compte, un délai de carence de 7 jours est appliqué avant la suppression définitive, permettant l'annulation en cas d'erreur.</p>
+    </div>
+
+    <!-- 6. Vos droits -->
+    <div class="section">
+      <h2>6. Vos droits</h2>
+      <div class="section-divider"></div>
+      <p>Conformément au RGPD, vous disposez des droits suivants sur vos données personnelles :</p>
+      <ul>
+        <li><strong style="color: var(--text)">Droit d'accès</strong> — obtenir une copie de vos données (export RGPD disponible dans l'app)</li>
+        <li><strong style="color: var(--text)">Droit de rectification</strong> — modifier vos informations depuis votre profil</li>
+        <li><strong style="color: var(--text)">Droit à l'effacement</strong> — supprimer votre compte depuis Paramètres &gt; Sécurité</li>
+        <li><strong style="color: var(--text)">Droit à la portabilité</strong> — exporter vos données au format JSON</li>
+        <li><strong style="color: var(--text)">Droit d'opposition</strong> — vous opposer au traitement fondé sur l'intérêt légitime</li>
+        <li><strong style="color: var(--text)">Droit de retrait du consentement</strong> — à tout moment, sans effet rétroactif</li>
+        <li><strong style="color: var(--text)">Droit de réclamation</strong> — auprès de la <a href="https://www.cnil.fr" target="_blank">CNIL</a></li>
+      </ul>
+      <div class="highlight-box">
+        <p>Pour exercer vos droits, contactez-nous à <a href="mailto:contact@kynkr.app">contact@kynkr.app</a>. Nous répondons dans un délai maximum de <strong style="color: var(--text)">30 jours</strong>.</p>
+      </div>
+    </div>
+
+    <!-- 7. Sécurité -->
+    <div class="section">
+      <h2>7. Sécurité des données</h2>
+      <div class="section-divider"></div>
+      <p>Kynkr met en œuvre des mesures techniques et organisationnelles adaptées pour protéger vos données :</p>
+      <ul>
+        <li>Chiffrement des données en transit (TLS 1.3)</li>
+        <li>Chiffrement des capsules temporelles (côté serveur, clé en Vault)</li>
+        <li>Authentification sécurisée avec détection de nouveaux appareils</li>
+        <li>Politiques d'accès par rangée (Row Level Security) sur toutes les tables</li>
+        <li>Adresses IP anonymisées dans les journaux</li>
+        <li>Mots de passe hashés (bcrypt via Supabase Auth)</li>
+      </ul>
+      <p>En cas de violation de données présentant un risque élevé, la CNIL sera notifiée dans les 72 heures conformément à l'article 33 du RGPD, et les utilisateurs concernés seront informés sans délai injustifié.</p>
+    </div>
+
+    <!-- 8. Contenu adulte -->
+    <div class="section">
+      <h2>8. Application à contenu adulte</h2>
+      <div class="section-divider"></div>
+      <div class="warning-box">
+        <p>⚠️ Kynkr est une application réservée aux <strong style="color: #e8c07a;">personnes majeures (18 ans et plus)</strong>. La date de naissance est vérifiée à l'inscription. Tout contenu généré par les utilisateurs reste strictement privé entre partenaires liés et n'est pas accessible à des tiers.</p>
+      </div>
+      <p>Les photos et médias partagés dans l'application sont stockés dans des espaces de stockage privés sécurisés, accessibles uniquement via des liens signés temporaires (durée limitée).</p>
+    </div>
+
+    <!-- 9. Cookies -->
+    <div class="section">
+      <h2>9. Cookies et traceurs</h2>
+      <div class="section-divider"></div>
+      <p>L'application mobile Kynkr n'utilise pas de cookies. Le site web <strong>kynkr.app</strong> n'utilise pas de cookies de traçage ou publicitaires. Seul le stockage local (AsyncStorage) est utilisé dans l'application pour des données fonctionnelles (préférences, session).</p>
+    </div>
+
+    <!-- 10. Mineurs -->
+    <div class="section">
+      <h2>10. Protection des mineurs</h2>
+      <div class="section-divider"></div>
+      <p>Kynkr est strictement interdit aux mineurs. Nous ne collectons sciemment aucune donnée de personnes de moins de 18 ans. Si nous apprenons qu'un mineur a créé un compte, celui-ci sera immédiatement supprimé.</p>
+    </div>
+
+    <!-- 11. Modifications -->
+    <div class="section">
+      <h2>11. Modifications de cette politique</h2>
+      <div class="section-divider"></div>
+      <p>Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. En cas de modification substantielle, vous serez informé par notification dans l'application ou par e-mail. La date de dernière mise à jour est indiquée en haut de cette page.</p>
+      <p>L'utilisation continue de l'application après notification vaut acceptation des modifications.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-card">
+      <h3>Une question sur vos données ?</h3>
+      <p style="color: var(--text-sec); font-size: 14px; margin-top: 8px;">Notre équipe répond dans les 30 jours.</p>
+      <a href="mailto:contact@kynkr.app" class="email-btn">contact@kynkr.app</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">Kynkr</div>
+    <div>© 2026 Kynkr — Tous droits réservés</div>
+    <div class="footer-links">
+      <a href="/premium">Premium</a>
+      <a href="/privacy">Confidentialité</a>
+      <a href="mailto:contact@kynkr.app">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a');
+        if (!a) return;
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+        if (a.target === '_blank') return;
+        e.preventDefault();
+        document.body.classList.add('page-out');
+        setTimeout(() => { window.location.href = href; }, 180);
+      });
+    })();
+  </script>
+
+</body>
+</html>
