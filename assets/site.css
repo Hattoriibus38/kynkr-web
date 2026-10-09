@@ -1,4 +1,10 @@
 /* Kynkr — site vitrine · DA « Dark Luxury » (fond #1a0f1e, Cinzel + Manrope, primary/secondary de l'app) */
+/* ── Polices hébergées sur ce site (aucune requête vers Google) — licence SIL OFL 1.1, voir /assets/fonts/LICENCES.txt ── */
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('/assets/fonts/cinzel-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 400 900; font-display: swap; src: url('/assets/fonts/cinzel-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Manrope'; font-style: normal; font-weight: 200 800; font-display: swap; src: url('/assets/fonts/manrope-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Manrope'; font-style: normal; font-weight: 200 800; font-display: swap; src: url('/assets/fonts/manrope-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   --bg: #1a0f1e;
   --bg-card: rgba(255, 255, 255, 0.04);
@@ -94,6 +100,7 @@ a { color: inherit; }
 .chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 8px var(--primary); }
 .hero-title { font-family: 'Cinzel', serif; font-size: clamp(36px, 4.2vw, 58px); font-weight: 700; line-height: 1.14; text-wrap: balance; }
 .hero-title em { font-style: normal; color: var(--primary); }
+.hero-tagline { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--secondary); margin-top: -10px; }
 .hero-sub { font-size: 17px; color: var(--fg-sec); line-height: 1.7; max-width: 46ch; }
 
 /* ── Formulaire « Me prévenir » ── */
@@ -146,6 +153,8 @@ a { color: inherit; }
 .screen-item figcaption { font-size: 14px; font-weight: 500; color: var(--fg-sec); text-align: center; line-height: 1.5; max-width: 200px; }
 
 .poll-block { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding: 56px 48px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border); }
+.poll-block.solo { grid-template-columns: 1fr; max-width: 760px; margin-inline: auto; text-align: center; }
+.poll-block.solo .eyebrow { text-align: center; }
 .poll-title { font-family: 'Cinzel', serif; font-size: clamp(22px, 2.5vw, 32px); font-weight: 700; line-height: 1.2; margin-bottom: 14px; text-wrap: balance; }
 .poll-desc { font-size: 15px; color: var(--fg-sec); line-height: 1.7; }
 .poll-phones { display: flex; gap: 22px; justify-content: center; align-items: flex-start; }
@@ -160,7 +169,7 @@ a { color: inherit; }
 .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: stretch; }
 .tier { display: flex; flex-direction: column; padding: 30px 24px; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border); }
 .tier.featured { border-color: rgba(237, 75, 97, 0.55); background: linear-gradient(180deg, rgba(237, 75, 97, 0.07), var(--bg-card)); box-shadow: 0 0 36px rgba(237, 75, 97, 0.1); }
-.tier h3 { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: .04em; margin-bottom: 4px; }
+.tier h2, .tier h3 { font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: .04em; margin-bottom: 4px; }
 .tier .tag { font-size: 12px; color: var(--fg-muted); margin-bottom: 18px; min-height: 2.6em; }
 .price { font-family: 'Cinzel', serif; font-size: 34px; font-weight: 700; line-height: 1.1; }
 .price small { font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 500; color: var(--fg-muted); }

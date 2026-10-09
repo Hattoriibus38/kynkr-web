@@ -4,10 +4,13 @@ import os
 import re
 import html
 import hashlib
+import json
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 URL = 'https://www.kynkr.app'
 MAJ = '9 octobre 2026'
+MAJ_ISO = '2026-10-09'  # date de dernière mise à jour des pages (sitemap : lastmod)
+ACCROCHE = 'Là où tout recommence'
 
 
 def version_asset(chemin):
@@ -15,6 +18,60 @@ def version_asset(chemin):
     (Cache-Control sur /assets/) pour que les visiteurs reçoivent tout de suite le CSS et le JS corrigés."""
     with open(os.path.join(RACINE, 'assets', chemin), 'rb') as f:
         return hashlib.md5(f.read()).hexdigest()[:8]
+
+
+# ─────────────────────────── Données structurées (JSON-LD) ───────────────────────────
+# Aucune note, aucun avis ni aucune évaluation : seuls des faits vérifiables (nom, adresse, offres publiées sur /premium).
+
+ORGANISATION = {
+    '@context': 'https://schema.org', '@type': 'Organization', '@id': URL + '/#organisation',
+    'name': 'Kynkr', 'url': URL + '/', 'logo': URL + '/assets/apple-touch-icon.png', 'email': 'contact@kynkr.app',
+    'contactPoint': {'@type': 'ContactPoint', 'contactType': 'service client', 'email': 'contact@kynkr.app', 'availableLanguage': 'fr'},
+}
+
+SITE_WEB = {
+    '@context': 'https://schema.org', '@type': 'WebSite', '@id': URL + '/#site', 'url': URL + '/', 'name': 'Kynkr',
+    'inLanguage': 'fr-FR', 'publisher': {'@id': URL + '/#organisation'},
+}
+
+
+def _offre(nom, prix, description):
+    return {'@type': 'Offer', 'name': nom, 'price': prix, 'priceCurrency': 'EUR', 'description': description}
+
+
+APPLICATION = {
+    '@context': 'https://schema.org', '@type': 'MobileApplication', 'name': 'Kynkr',
+    'description': "Kynkr, l'application pour couples : défi du jour, quiz de compatibilité, carnet de souvenirs, capsules temporelles, espaces entre couples et mode discret. Ouverture prochaine, réservée aux adultes.",
+    'applicationCategory': 'LifestyleApplication', 'operatingSystem': 'Android, iOS', 'inLanguage': 'fr',
+    'url': URL + '/', 'publisher': {'@id': URL + '/#organisation'},
+    'offers': [
+        _offre('Gratuit', '0', "Offre gratuite pour commencer."),
+        _offre('Premium (mensuel)', '9.99', 'Abonnement mensuel.'),
+        _offre('Premium (annuel)', '59.99', 'Abonnement annuel, 7 jours d\'essai.'),
+        _offre('Premium Couple (mensuel)', '14.99', 'Un abonnement pour deux comptes liés.'),
+        _offre('Premium Couple (annuel)', '89.99', 'Un abonnement annuel pour deux comptes liés, 7 jours d\'essai.'),
+        _offre('VIP à vie', '249', 'Paiement unique.'),
+    ],
+}
+
+
+def fil_ariane(nom, chemin):
+    return {
+        '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Accueil', 'item': URL + '/'},
+            {'@type': 'ListItem', 'position': 2, 'name': nom, 'item': URL + chemin},
+        ],
+    }
+
+
+def script_jsonld(objets):
+    sortie = ''
+    for o in objets or []:
+        texte = json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+        sortie += '<script type="application/ld+json">%s</script>\n' % texte
+    return sortie
+
 
 # ─────────────────────────── Éléments communs ───────────────────────────
 
@@ -61,7 +118,7 @@ def pied():
   <div class="footer-grid">
     <div>
       <a href="/" class="logo" aria-label="Kynkr, accueil">Kynk<span>r</span></a>
-      <p class="footer-about">L'application des couples qui prennent soin de leur relation. Réservée aux personnes majeures.</p>
+      <p class="footer-about">{ACCROCHE}. L'application des couples qui prennent soin de leur relation. Réservée aux personnes majeures.</p>
     </div>
     <div><h4>Produit</h4><ul><li><a href="/#fonctionnalites">Fonctionnalités</a></li><li><a href="/#discretion">Discrétion</a></li><li><a href="/premium">Premium</a></li></ul></div>
     <div><h4>Légal</h4><ul><li><a href="/privacy">Confidentialité</a></li><li><a href="/cgu">Conditions d'utilisation</a></li><li><a href="/suppression-compte">Supprimer mon compte</a></li></ul></div>
@@ -73,12 +130,14 @@ def pied():
 <script defer src="/_vercel/insights/script.js"></script>'''
 
 
-def tete(titre, description, chemin, og_titre=None, noindex=False):
+def tete(titre, description, chemin, og_titre=None, noindex=False, jsonld=None):
     t = html.escape(titre)
     d = html.escape(description)
     ot = html.escape(og_titre or titre)
     robots = '<meta name="robots" content="noindex">\n' if noindex else ''
     canonique = '' if noindex else f'<link rel="canonical" href="{URL}{chemin}">\n'
+    alt_image = html.escape("Kynkr, l'application pour couples : l'écran d'accueil avec le compteur de jours ensemble et la messagerie du couple")
+    donnees = script_jsonld(jsonld)
     return f'''<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -94,14 +153,20 @@ def tete(titre, description, chemin, og_titre=None, noindex=False):
 <meta property="og:description" content="{d}">
 <meta property="og:url" content="{URL}{chemin}">
 <meta property="og:image" content="{URL}/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{alt_image}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{ot}">
+<meta name="twitter:description" content="{d}">
+<meta name="twitter:image" content="{URL}/assets/og-image.png">
+<meta name="twitter:image:alt" content="{alt_image}">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="preload" href="/assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css?v={version_asset('site.css')}">
-</head>
+{donnees}</head>
 <body>'''
 
 
@@ -137,7 +202,7 @@ CARTES = [
     ('livre', 'sec', 'Carnet & capsules', 'Garde vos souvenirs dans un carnet partagé, et glisse des messages dans une capsule temporelle à ouvrir plus tard.'),
     ('courbe', '', 'Quiz de compatibilité', 'Explore ce qui vous unit et ce qui vous distingue : des questions pour mieux te connaître, et mieux vous connaître.'),
     ('groupe', '', 'Espaces communautaires', 'Rejoins des espaces privés avec d\'autres couples pour partager, t\'inspirer, et ne pas naviguer seul.'),
-    ('boussole', '', 'Découverte de profils', 'Rencontre d\'autres couples qui te ressemblent. Échange, connecte-toi, élargis ton cercle à ton rythme.'),
+    ('boussole', '', 'Découverte entre couples', 'Une découverte optionnelle : fais connaissance avec des couples qui te ressemblent, échange et élargis ton cercle à ton rythme.'),
 ]
 
 POINTS = [
@@ -166,13 +231,12 @@ def accueil():
     alt_accueil = "L'écran d'accueil de Kynkr : 427 jours ensemble, humeurs du jour et défi du jour"
     tel_accueil = telephone('accueil', alt_accueil, 'p1', lazy=False)
     tel_messagerie = telephone('messagerie', 'La messagerie du couple dans Kynkr', 'p2', lazy=False)
-    tel_avant = telephone('sondage-avant', 'Un sondage avant le vote', 's')
-    tel_apres = telephone('sondage-apres', 'Le même sondage après le vote, avec les résultats', 's')
     corps = f'''<main id="contenu">
 <section class="hero" id="prevenir">
   <div class="hero-text">
     <span class="chip">Ouverture prochaine</span>
     <h1 class="hero-title">Ta vie à deux, un espace <em>rien qu'à vous</em>.</h1>
+    <p class="hero-tagline">{ACCROCHE}.</p>
     <p class="hero-sub">Kynkr réunit tout ce dont tu as besoin pour nourrir ta relation : souvenirs, défis, jeux, espaces entre couples. Au quotidien comme dans les moments qui comptent.</p>
     {formulaire_attente('site')}
     {NOTE_ATTENTE}
@@ -199,15 +263,11 @@ def accueil():
     <p class="lead">Quatre écrans, quatre façons de nourrir ta relation au quotidien.</p>
     <div class="divider"></div>
     <div class="screens">{galerie}</div>
-    <div class="poll-block reveal">
+    <div class="poll-block solo reveal">
       <div>
         <p class="eyebrow left">Ta voix compte</p>
-        <h3 class="poll-title">Tu guides ce qu'on construit.</h3>
-        <p class="poll-desc">Des sondages réguliers pour que chacun puisse orienter les prochaines fonctionnalités. Tu choisis de rester anonyme ou non, et tu peux changer d'avis quand tu veux.</p>
-      </div>
-      <div class="poll-phones">
-        <figure>{tel_avant}<figcaption>Avant</figcaption></figure>
-        <figure>{tel_apres}<figcaption>Après</figcaption></figure>
+        <h3 class="poll-title">Ton avis compte, vraiment.</h3>
+        <p class="poll-desc">Des sondages réguliers, ouverts à tous, pour donner ton avis sur l'application. Tu choisis de rester anonyme ou non, et tu peux changer d'avis quand tu veux.</p>
       </div>
     </div>
   </div>
@@ -215,7 +275,7 @@ def accueil():
 
 <section class="section wrap" id="discretion">
   <p class="eyebrow">Discrétion</p>
-  <h2 class="h2">Ton intimité t'appartient</h2>
+  <h2 class="h2">Ta vie privée t'appartient</h2>
   <p class="lead">Kynkr est pensé pour qu'on s'y sente en sécurité, même quand quelqu'un regarde par-dessus ton épaule.</p>
   <div class="divider"></div>
   <ul class="points">{points}</ul>
@@ -244,9 +304,10 @@ def accueil():
   </div>
 </section>
 </main>'''
-    return page('Kynkr — Ta vie à deux, un espace rien qu\'à vous',
-                'Kynkr réunit souvenirs, défis, jeux et espaces entre couples. Messagerie privée, carnet partagé, sondages, mode discret. Ouverture prochaine.',
-                '/', corps)
+    return page('Kynkr — Application pour couples : défis, quiz et souvenirs',
+                "Kynkr, l'application pour couples : défi du jour, quiz de compatibilité, carnet de souvenirs, capsules temporelles et mode discret. Liste d'attente ouverte.",
+                '/', corps, og_titre=ACCROCHE + ' — Kynkr, l\'application pour couples',
+                jsonld=[ORGANISATION, SITE_WEB, APPLICATION])
 
 
 # ─────────────────────────── Premium ───────────────────────────
@@ -273,7 +334,7 @@ def premium():
         prix = f'<div class="price">{o["prix"]} <small>{o.get("unite", "")}</small></div>'
         badge = f'<span class="badge-top">{o["badge"]}</span>' if o['badge'] else ''
         lis = ''.join(f'<li>{html.escape(x)}</li>' for x in o['liste'])
-        cartes += (f'<article class="tier reveal{" featured" if o["vedette"] else ""}">{badge}<h3>{o["nom"]}</h3>'
+        cartes += (f'<article class="tier reveal{" featured" if o["vedette"] else ""}">{badge}<h2>{o["nom"]}</h2>'
                    f'<p class="tag">{o["tag"]}</p>{prix}<p class="price-alt">{o["alt"]}</p><ul>{lis}</ul></article>')
     corps = f'''<main id="contenu">
 <section class="section wrap top-offset">
@@ -290,8 +351,8 @@ def premium():
 </section>
 </main>'''
     return page('Les offres Kynkr — Gratuit, Premium, Couple et VIP à vie',
-                'Découvre les offres Kynkr : gratuit pour commencer, Premium, offre Couple pour deux comptes liés et VIP à vie.',
-                '/premium', corps, courant='premium')
+                "Découvre les offres de Kynkr, l'application pour couples : gratuit pour commencer, Premium, offre Couple pour deux comptes liés et VIP à vie.",
+                '/premium', corps, courant='premium', jsonld=[fil_ariane('Les offres', '/premium')])
 
 
 # ─────────────────────────── Contact, suppression, CGU, 404 ───────────────────────────
@@ -311,8 +372,8 @@ def contact():
   </div>
   <p class="fine mt">Kynkr est édité par un développeur indépendant basé en France. Nous répondons en général sous quelques jours.</p>
 </main>'''
-    return page('Contact — Kynkr', 'Contacter l\'équipe Kynkr : questions, retours, support technique et demandes relatives à tes données.',
-                '/contact', corps, courant='contact')
+    return page('Contact — Kynkr', "Contacter l'équipe de Kynkr, l'application pour couples : questions, retours, support technique et demandes relatives à tes données.",
+                '/contact', corps, courant='contact', jsonld=[fil_ariane('Contact', '/contact')])
 
 
 def suppression():
@@ -350,8 +411,8 @@ def suppression():
     <p>Supprimer ton compte n'annule pas automatiquement un abonnement pris via l'App Store ou Google Play. Pense à le résilier depuis ton compte du store.</p>
   </div>
 </main>'''
-    return page('Supprimer mon compte — Kynkr', 'Comment supprimer ton compte Kynkr et tes données : depuis l\'application ou par e-mail.',
-                '/suppression-compte', corps)
+    return page('Supprimer mon compte — Kynkr', "Comment supprimer ton compte Kynkr et tes données : depuis l'application ou par e-mail.",
+                '/suppression-compte', corps, jsonld=[fil_ariane('Supprimer mon compte', '/suppression-compte')])
 
 
 def cgu():
@@ -362,7 +423,7 @@ def cgu():
     <div class="accent-bar"></div>
     <p class="meta">Dernière mise à jour : ''' + MAJ + ''' · Version de la bêta</p>
   </div>
-  <div class="intro-card"><strong>En résumé :</strong> Kynkr est réservé aux adultes. On y prend soin de sa relation et on y rencontre des personnes dans le respect du consentement, de la vie privée et de chacun. Les abus sont modérés et peuvent mener à une exclusion.</div>
+  <div class="intro-card"><strong>En résumé :</strong> Kynkr est réservé aux adultes. On y prend soin de sa relation et on y fait connaissance avec d'autres couples dans le respect du consentement, de la vie privée et de chacun. Les abus sont modérés et peuvent mener à une exclusion.</div>
 
   <div class="section"><h2>1. Objet</h2><div class="section-divider"></div>
     <p>Les présentes conditions encadrent l'utilisation de l'application mobile Kynkr et du site kynkr.app (le « Service »), édités par Kylian Vuillemin, développeur indépendant basé en France (contact : <a href="mailto:contact@kynkr.app">contact@kynkr.app</a>). En créant un compte, tu les acceptes.</p></div>
@@ -380,7 +441,7 @@ def cgu():
     <ul>
       <li>tout contenu ou comportement impliquant des mineurs ;</li>
       <li>le harcèlement, les menaces, les propos haineux ou discriminatoires ;</li>
-      <li>le partage de photos, vidéos ou messages intimes d'une personne sans son accord ;</li>
+      <li>le partage de photos, vidéos ou messages à caractère privé d'une personne sans son accord ;</li>
       <li>l'usurpation d'identité, les faux profils, la sollicitation commerciale ou frauduleuse ;</li>
       <li>tout contenu illégal, ainsi que toute activité de prostitution ou de traite d'êtres humains ;</li>
       <li>le contournement des mesures de sécurité ou de modération du Service.</li>
@@ -400,10 +461,10 @@ def cgu():
     </ul></div>
 
   <div class="section"><h2>6. Données personnelles</h2><div class="section-divider"></div>
-    <p>Le traitement de tes données est décrit dans notre <a href="/privacy">politique de confidentialité</a>. Certaines données relèvent de la vie intime : elles ne sont traitées qu'avec ton consentement explicite, que tu peux retirer à tout moment.</p></div>
+    <p>Le traitement de tes données est décrit dans notre <a href="/privacy">politique de confidentialité</a>. Certaines données sont particulièrement sensibles (article 9 du RGPD) : elles ne sont traitées qu'avec ton consentement explicite, que tu peux retirer à tout moment.</p></div>
 
   <div class="section"><h2>7. Disponibilité et responsabilité</h2><div class="section-divider"></div>
-    <p>Nous faisons de notre mieux pour assurer un Service fiable, mais il est fourni « en l'état », sans garantie d'absence d'interruption ou d'erreur, en particulier pendant la bêta. Kynkr n'est pas responsable des rencontres ou échanges entre utilisateurs : sois vigilant·e et protège tes informations personnelles. Notre responsabilité est limitée aux dommages directs et prévisibles, dans la mesure permise par la loi.</p></div>
+    <p>Nous faisons de notre mieux pour assurer un Service fiable, mais il est fourni « en l'état », sans garantie d'absence d'interruption ou d'erreur, en particulier pendant la bêta. Kynkr n'est pas responsable des échanges ou des rendez-vous entre utilisateurs : sois vigilant·e et protège tes informations personnelles. Notre responsabilité est limitée aux dommages directs et prévisibles, dans la mesure permise par la loi.</p></div>
 
   <div class="section"><h2>8. Propriété intellectuelle</h2><div class="section-divider"></div>
     <p>La marque Kynkr, le logo, l'interface, les textes et les illustrations sont protégés. Toute reproduction ou réutilisation sans autorisation écrite est interdite.</p></div>
@@ -420,7 +481,7 @@ def cgu():
   <div class="contact-card"><strong>Une question sur ces conditions ?</strong><br>Écris-nous à <a href="mailto:contact@kynkr.app">contact@kynkr.app</a>.</div>
 </main>'''
     return page('Conditions générales d\'utilisation — Kynkr', 'Les conditions d\'utilisation de Kynkr : accès réservé aux adultes, comportement attendu, offres et abonnements, données et modération.',
-                '/cgu', corps)
+                '/cgu', corps, jsonld=[fil_ariane('Conditions générales d\'utilisation', '/cgu')])
 
 
 def non_trouvee():
@@ -458,7 +519,7 @@ def confidentialite():
     <div class="section" id="sondages">
       <h2>Sondages dans l'application</h2>
       <div class="section-divider"></div>
-      <p>Tu peux répondre à des sondages destinés à orienter l'évolution de Kynkr. Pour établir des statistiques, ton sexe et ta tranche d'âge (jamais ta date de naissance) sont associés à ta réponse. Les groupes de moins de 5 personnes ne sont jamais affichés à l'équipe.</p>
+      <p>Tu peux répondre à des sondages destinés à orienter l'évolution de Kynkr. Pour établir des statistiques, ton genre et ta tranche d'âge (jamais ta date de naissance) sont associés à ta réponse. Les groupes de moins de 5 personnes ne sont jamais affichés à l'équipe.</p>
       <p>Par défaut, ta réponse est <strong>anonyme</strong> : l'équipe ne voit que des chiffres. Si tu décoches « Rester anonyme », ton pseudo devient visible de l'équipe, qui peut te recontacter pour un retour détaillé. Tu peux changer ce choix, ou ta réponse, à tout moment. Si tu supprimes ton compte, le lien avec ton identité est effacé et seules des statistiques non identifiantes subsistent.</p>
     </div>
 '''
@@ -507,7 +568,7 @@ def confidentialite():
   {c}
 </main>'''
     return page('Politique de confidentialité — Kynkr', 'Comment Kynkr traite tes données personnelles : données collectées, bases légales, sous-traitants, durées de conservation et tes droits.',
-                '/privacy', corps)
+                '/privacy', corps, jsonld=[fil_ariane('Politique de confidentialité', '/privacy')])
 
 
 def typographie(doc):
@@ -517,7 +578,22 @@ def typographie(doc):
         for a, b in ((' :', '&nbsp;:'), (' ;', '&nbsp;;'), (' ?', '&nbsp;?'), (' !', '&nbsp;!'), ('« ', '«&nbsp;'), (' »', '&nbsp;»')):
             s = s.replace(a, b)
         return '>' + s + '<'
-    return re.sub(r'>([^<>]+)<', texte, doc)
+    morceaux = re.split(r'(<script\b.*?</script>)', doc, flags=re.S)
+    return ''.join(m if m.startswith('<script') else re.sub(r'>([^<>]+)<', texte, m) for m in morceaux)
+
+
+PAGES_INDEXABLES = ['/', '/premium', '/contact', '/cgu', '/privacy', '/suppression-compte']
+
+
+def sitemap():
+    """sitemap.xml avec lastmod (date de dernière mise à jour des pages, MAJ_ISO)."""
+    lignes = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for chemin in PAGES_INDEXABLES:
+        lignes.append('  <url><loc>%s%s</loc><lastmod>%s</lastmod></url>' % (URL, chemin, MAJ_ISO))
+    lignes.append('</urlset>')
+    with open(os.path.join(RACINE, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n') as f:
+        f.write('\n'.join(lignes) + '\n')
+    print('écrit sitemap.xml')
 
 
 def ecrire(nom, contenu):
@@ -536,3 +612,4 @@ if __name__ == '__main__':
     ecrire('cgu.html', cgu())
     ecrire('privacy.html', confidentialite())
     ecrire('404.html', non_trouvee())
+    sitemap()
