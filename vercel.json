@@ -3,6 +3,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/web--privacy",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
       "source": "/web--privacy.html",
       "destination": "/privacy",
       "permanent": true
