@@ -208,12 +208,14 @@ a { color: inherit; }
 .footer-about { font-size: 13px; color: var(--fg-muted); line-height: 1.7; max-width: 32ch; margin-top: 10px; }
 .footer-bottom { max-width: 1200px; margin: 36px auto 0; padding-top: 22px; border-top: 1px solid var(--border-soft); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--fg-muted); }
 
-/* ── Apparition douce (désactivée si mouvement réduit) ── */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.in { opacity: 1; transform: none; }
+/* ── Apparition douce ──
+   Le contenu est visible par défaut (sans JavaScript, avec mouvement réduit, au retour arrière) :
+   l'effet n'existe que lorsque site.js pose la classe « js » sur <html>. */
+.js .reveal { opacity: 0; transform: translateY(14px); }
+.js .reveal.in { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s ease; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .js .reveal, .js .reveal.in { opacity: 1; transform: none; transition: none; }
   .btn, .card { transition: none; }
 }
 

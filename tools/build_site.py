@@ -3,10 +3,18 @@
 import os
 import re
 import html
+import hashlib
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 URL = 'https://www.kynkr.app'
 MAJ = '9 octobre 2026'
+
+
+def version_asset(chemin):
+    """Empreinte courte d'un fichier de assets/ : change à chaque modification, ce qui contourne le cache de 7 jours
+    (Cache-Control sur /assets/) pour que les visiteurs reçoivent tout de suite le CSS et le JS corrigés."""
+    with open(os.path.join(RACINE, 'assets', chemin), 'rb') as f:
+        return hashlib.md5(f.read()).hexdigest()[:8]
 
 # ─────────────────────────── Éléments communs ───────────────────────────
 
@@ -61,7 +69,7 @@ def pied():
   </div>
   <div class="footer-bottom"><span>© 2026 Kynkr — Tous droits réservés</span><span>Kynkr est réservé aux adultes (18 ans et plus).</span></div>
 </footer>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v={version_asset('site.js')}" defer></script>
 <script defer src="/_vercel/insights/script.js"></script>'''
 
 
@@ -70,6 +78,7 @@ def tete(titre, description, chemin, og_titre=None, noindex=False):
     d = html.escape(description)
     ot = html.escape(og_titre or titre)
     robots = '<meta name="robots" content="noindex">\n' if noindex else ''
+    canonique = '' if noindex else f'<link rel="canonical" href="{URL}{chemin}">\n'
     return f'''<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -78,8 +87,7 @@ def tete(titre, description, chemin, og_titre=None, noindex=False):
 <title>{t}</title>
 <meta name="description" content="{d}">
 {robots}<meta name="theme-color" content="#1a0f1e">
-<link rel="canonical" href="{URL}{chemin}">
-<meta property="og:type" content="website">
+{canonique}<meta property="og:type" content="website">
 <meta property="og:site_name" content="Kynkr">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="{ot}">
@@ -92,7 +100,7 @@ def tete(titre, description, chemin, og_titre=None, noindex=False):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v={version_asset('site.css')}">
 </head>
 <body>'''
 
@@ -254,7 +262,7 @@ OFFRES = [
          liste=['Tout Premium, pour toi et ton partenaire', 'Un seul abonnement, deux comptes liés', 'La couverture s\'arrête si le couple se sépare',
                 'Idéal pour profiter de tout, ensemble'], vedette=True, badge='Le plus choisi'),
     dict(nom='VIP à vie', tag='Un paiement, pour toujours', prix='249 €', unite='une fois', alt='Sans abonnement ni renouvellement',
-         liste=['Tout Premium, avec les limites les plus hautes', 'Le Labo : accès anticipé aux nouveautés', 'Vote sur la feuille de route',
+         liste=['Tout Premium, avec les limites les plus hautes', 'Le Labo : accès anticipé aux nouveautés', 'Sondages privilégiés avec les bêta testeurs',
                 'Badge Fondateur numéroté pour les premiers', 'Thème de couleurs personnalisable', 'Support prioritaire'], vedette=False, badge=None),
 ]
 
@@ -315,7 +323,7 @@ def suppression():
     <div class="accent-bar"></div>
     <p class="meta">Dernière mise à jour : ''' + MAJ + '''</p>
   </div>
-  <div class="intro-card"><strong>En bref :</strong> tu peux supprimer ton compte et tes données à tout moment, directement depuis l'application. Un délai de réflexion de 7 jours est appliqué avant l'effacement définitif.</div>
+  <div class="intro-card"><strong>En bref :</strong> tu peux supprimer ton compte et tes données à tout moment, directement depuis l'application. Un délai de réflexion de 30 jours est appliqué avant l'effacement définitif.</div>
   <div class="section">
     <h2>Depuis l'application</h2>
     <div class="section-divider"></div>
@@ -324,7 +332,7 @@ def suppression():
       <li>Va dans <strong>Sécurité</strong>.</li>
       <li>Choisis <strong>Supprimer mon compte</strong> et confirme.</li>
     </ul>
-    <p>Pendant 7 jours, tu peux te reconnecter pour annuler la demande. Passé ce délai, ton compte et tes données personnelles sont effacés (voir les durées de conservation dans la <a href="/privacy">politique de confidentialité</a>).</p>
+    <p>Pendant 30 jours, tu peux te reconnecter pour annuler la demande. Passé ce délai, ton compte et tes données personnelles sont effacés (voir les durées de conservation dans la <a href="/privacy">politique de confidentialité</a>).</p>
   </div>
   <div class="section">
     <h2>Par e-mail</h2>
