@@ -1,555 +1,138 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kynkr — L'app pour les couples qui s'assument</title>
-  <meta name="description" content="Kynkr est l'application intime pour les couples qui veulent explorer, se connecter et s'épanouir ensemble." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #1a0f1e;
-      --card-verre: rgba(36,20,40,0.85);
-      --card-alt: rgba(45,25,52,0.9);
-      --primary: #ed4b61;
-      --secondary: #fe6e44;
-      --primary-dark: #c9184a;
-      --text: #f4e0f0;
-      --text-sec: #b0a0b5;
-      --muted: #6a5570;
-      --border: rgba(255,255,255,0.06);
-      --border-strong: rgba(255,255,255,0.12);
-      --glow-primary: rgba(237,75,97,0.15);
-      --glow-strong: rgba(237,75,97,0.4);
-    }
-
-    html, body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.55;
-      overflow-x: hidden;
-    }
-
-    /* HALO AMBIANCE — toile de fond fixed */
-    .halo-bg {
-      position: fixed;
-      inset: -20%;
-      pointer-events: none;
-      z-index: -1;
-      background:
-        radial-gradient(ellipse 60% 40% at 20% 10%, rgba(237,75,97,0.18), transparent 60%),
-        radial-gradient(ellipse 50% 30% at 80% 30%, rgba(254,110,68,0.12), transparent 60%),
-        radial-gradient(ellipse 70% 50% at 50% 80%, rgba(201,24,74,0.10), transparent 60%);
-      filter: blur(30px);
-    }
-
-    /* NAV */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: rgba(26,15,30,0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 100;
-    }
-
-    .logo {
-      font-family: 'Cinzel', serif;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-decoration: none;
-    }
-
-    nav a {
-      color: var(--text-sec);
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      transition: color 0.2s;
-    }
-    nav a:hover { color: var(--text); }
-
-    /* STEP CHIP */
-    .step-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(237,75,97,0.4);
-      background: rgba(237,75,97,0.1);
-      color: var(--primary);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .step-chip::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--primary);
-      box-shadow: 0 0 8px rgba(237,75,97,0.8);
-      animation: dotPulse 2s ease-in-out infinite;
-    }
-
-    /* ACCENT BAR */
-    .accent-bar {
-      width: 40px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 1px;
-      margin: 20px auto 32px;
-    }
-
-    /* HERO */
-    .hero {
-      text-align: center;
-      padding: 110px 20px 60px;
-      max-width: 760px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .hero .step-chip { margin-bottom: 28px; }
-
-    h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(34px, 6vw, 56px);
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: 1px;
-      margin-bottom: 0;
-    }
-
-    h1 .accent {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-desc {
-      font-family: 'Manrope', sans-serif;
-      font-size: 17px;
-      color: var(--text-sec);
-      max-width: 520px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-    }
-
-    /* CTAs */
-    .cta-group {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 12px;
-      font-family: 'Manrope', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: opacity 0.2s, transform 0.15s, box-shadow 0.3s;
-      box-shadow: 0 0 24px rgba(237,75,97,0.25);
-      animation: glowPulse 3s ease-in-out infinite;
-    }
-    .btn-primary:hover {
-      opacity: 0.94;
-      transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(237,75,97,0.5);
-    }
-
-    .btn-secondary {
-      background: var(--card-verre);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: var(--text);
-      border: 1px solid var(--border-strong);
-      padding: 15px 30px;
-      border-radius: 12px;
-      font-family: 'Manrope', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .btn-secondary:hover {
-      border-color: rgba(237,75,97,0.4);
-      background: rgba(237,75,97,0.06);
-    }
-
-    /* DOTS DÉCORATIFS */
-    .dots {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin: 60px 0 30px;
-    }
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--primary);
-      box-shadow: 0 0 12px rgba(237,75,97,0.7);
-      animation: dotPulse 2.2s ease-in-out infinite;
-    }
-    .dot:nth-child(2) { animation-delay: 0.3s; }
-    .dot:nth-child(3) { animation-delay: 0.6s; }
-    .dot:nth-child(4) { animation-delay: 0.9s; }
-
-    /* SECTION TITLE */
-    .section-title {
-      text-align: center;
-      padding: 40px 20px 20px;
-    }
-    .section-title .step-chip { margin-bottom: 20px; }
-    .section-title h2 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(26px, 4vw, 36px);
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      margin: 0;
-    }
-    .section-title > p {
-      font-family: 'Manrope', sans-serif;
-      color: var(--text-sec);
-      font-size: 15px;
-      max-width: 500px;
-      margin: 12px auto 0;
-    }
-
-    /* FEATURES */
-    .features {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 20px 20px 80px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .feature-card {
-      background: var(--card-verre);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px 28px;
-      text-align: center;
-      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-    }
-    .feature-card:hover {
-      border-color: rgba(237,75,97,0.4);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(237,75,97,0.18);
-    }
-
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      background: rgba(237,75,97,0.12);
-      border: 1px solid rgba(237,75,97,0.3);
-      font-size: 22px;
-    }
-
-    .feature-card h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .feature-card p {
-      font-family: 'Manrope', sans-serif;
-      color: var(--text-sec);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      font-family: 'Manrope', sans-serif;
-    }
-
-    footer a {
-      color: var(--muted);
-      text-decoration: none;
-      margin: 0 14px;
-      transition: color 0.2s;
-    }
-    footer a:hover { color: var(--primary); }
-
-    .footer-links { margin-top: 14px; }
-
-    .footer-logo {
-      font-family: 'Cinzel', serif;
-      font-size: 14px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--text-sec);
-      margin-bottom: 10px;
-    }
-
-    /* ANIMATIONS */
-    @keyframes dotPulse {
-      0%, 100% { transform: scale(0.85); opacity: 0.6; }
-      50% { transform: scale(1.15); opacity: 1; }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 24px rgba(237,75,97,0.25); transform: scale(1); }
-      50% { box-shadow: 0 0 44px rgba(237,75,97,0.55); transform: scale(1.03); }
-    }
-
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .anim-in {
-      opacity: 0;
-      animation: fadeSlideUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .anim-in.d1 { animation-delay: 60ms; }
-    .anim-in.d2 { animation-delay: 140ms; }
-    .anim-in.d3 { animation-delay: 220ms; }
-    .anim-in.d4 { animation-delay: 300ms; }
-    .anim-in.d5 { animation-delay: 380ms; }
-
-    /* Boutons press scale */
-    .btn-primary:active,
-    .btn-secondary:active {
-      transform: scale(0.96);
-      transition: transform 0.12s ease-out;
-    }
-
-    /* EMBER CANVAS + PAGE EXIT */
-    #emberCanvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    body {
-      transition: opacity 180ms ease-out, transform 180ms ease-out;
-    }
-    body.page-out {
-      opacity: 0;
-      transform: translateY(-12px);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 640px) {
-      nav { padding: 16px 20px; }
-      .hero { padding: 70px 16px 40px; }
-      .cta-group { flex-direction: column; align-items: stretch; }
-      .btn-primary, .btn-secondary { width: 100%; text-align: center; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kynkr — Ta vie à deux, un espace rien qu&#x27;à vous</title>
+<meta name="description" content="Kynkr réunit souvenirs, défis, jeux et espaces entre couples. Messagerie privée, carnet partagé, sondages, mode discret. Ouverture prochaine.">
+<meta name="theme-color" content="#1a0f1e">
+<link rel="canonical" href="https://www.kynkr.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kynkr">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Kynkr — Ta vie à deux, un espace rien qu&#x27;à vous">
+<meta property="og:description" content="Kynkr réunit souvenirs, défis, jeux et espaces entre couples. Messagerie privée, carnet partagé, sondages, mode discret. Ouverture prochaine.">
+<meta property="og:url" content="https://www.kynkr.app/">
+<meta property="og:image" content="https://www.kynkr.app/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-
-  <div class="halo-bg" aria-hidden="true"></div>
-  <canvas id="emberCanvas" aria-hidden="true"></canvas>
-
-  <nav>
-    <a href="/" class="logo">Kynkr</a>
-    <a href="#nouveautes">Nouveautés</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="step-chip anim-in">Beta bientôt disponible</div>
-    <h1 class="anim-in d1">L'app pour les couples<br/>qui <span class="accent">s'assument</span></h1>
-    <div class="accent-bar anim-in d2"></div>
-    <p class="hero-desc anim-in d3">Explorez, connectez-vous et épanouissez-vous ensemble. Kynkr est l'espace intime conçu pour les couples modernes.</p>
-    <div class="cta-group anim-in d4">
-      <a href="/premium" class="btn-primary">Découvrir Premium</a>
-      <a href="#nouveautes" class="btn-secondary">Voir les nouveautés</a>
-    </div>
-    <div class="dots anim-in d5" aria-hidden="true">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-  </section>
-
-  <!-- TEASING -->
-  <div class="section-title" id="nouveautes">
-    <div class="step-chip">En préparation</div>
-    <h2>Quelque chose se prépare</h2>
-    <div class="accent-bar"></div>
-    <p>Les fonctionnalités seront révélées au lancement de la beta.</p>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<div class="halo-bg" aria-hidden="true"></div>
+<header class="site-nav">
+  <a href="/" class="logo" aria-label="Kynkr, accueil">Kynk<span>r</span></a>
+  <ul class="nav-links" id="menu"><li><a href="/#fonctionnalites">Fonctionnalités</a></li><li><a href="/#discretion">Discrétion</a></li><li><a href="/premium">Premium</a></li><li><a href="/contact">Contact</a></li></ul>
+  <div class="nav-right">
+    <a href="/#prevenir" class="btn btn-sm">Me prévenir</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
+</header>
+<main id="contenu">
+<section class="hero" id="prevenir">
+  <div class="hero-text">
+    <span class="chip">Ouverture prochaine</span>
+    <h1 class="hero-title">Ta vie à deux, un espace <em>rien qu'à vous</em>.</h1>
+    <p class="hero-sub">Kynkr réunit tout ce dont tu as besoin pour nourrir ta relation&nbsp;: souvenirs, défis, jeux, espaces entre couples. Au quotidien comme dans les moments qui comptent.</p>
+    <form class="waitlist" data-source="site" novalidate>
+  <label class="sr-only" for="email-site">Ton adresse email</label>
+  <input class="waitlist-input" id="email-site" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Ton adresse email" required>
+  <input class="waitlist-trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" type="submit">Me prévenir</button>
+</form>
+<p class="waitlist-status" role="status" aria-live="polite"></p>
+    <p class="waitlist-note">En t'inscrivant, tu acceptes que ton adresse serve uniquement à t'avertir de l'ouverture. <a href="/privacy#liste-attente">En savoir plus</a>.</p>
+    <a href="#fonctionnalites" class="btn btn-ghost">Voir les fonctionnalités →</a>
+  </div>
+  <div class="hero-phones" aria-hidden="false">
+    <div class="phone p1"><div class="phone-screen"><img src="/assets/app/accueil.webp" width="540" height="1200" alt="L&#x27;écran d&#x27;accueil de Kynkr : 427 jours ensemble, humeurs du jour et défi du jour" decoding="async"></div></div>
+    <div class="phone p2"><div class="phone-screen"><img src="/assets/app/messagerie.webp" width="540" height="1200" alt="La messagerie du couple dans Kynkr" decoding="async"></div></div>
+  </div>
+</section>
 
-  <section class="features">
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-      <defs>
-        <linearGradient id="kGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#ed4b61"/>
-          <stop offset="100%" stop-color="#fe6e44"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    <div class="feature-card anim-in d1">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+<section class="section wrap" id="fonctionnalites">
+  <p class="eyebrow">Ce que tu trouveras</p>
+  <h2 class="h2">Tout ce dont un couple a besoin</h2>
+  <p class="lead">Un seul endroit pour partager, planifier, découvrir et vous retrouver, avec les personnes qui comptent vraiment.</p>
+  <div class="divider"></div>
+  <div class="grid-3"><article class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></div><h3>Messagerie du couple</h3><p>Un espace de discussion privé, rien qu'à vous deux&nbsp;: GIF, réactions, messages épinglés, souvenirs partagés.</p></article><article class="card reveal"><div class="icon-box sec"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div><h3>Défi du jour</h3><p>Chaque jour, un défi à relever ensemble. Rituels, jeux, moments complices pour ne jamais tomber dans la routine.</p></article><article class="card reveal"><div class="icon-box sec"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16zM4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg></div><h3>Carnet & capsules</h3><p>Garde vos souvenirs dans un carnet partagé, et glisse des messages dans une capsule temporelle à ouvrir plus tard.</p></article><article class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></svg></div><h3>Quiz de compatibilité</h3><p>Explore ce qui vous unit et ce qui vous distingue&nbsp;: des questions pour mieux te connaître, et mieux vous connaître.</p></article><article class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.5" r="2.4"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5M15.5 14.8c2.8-.4 5.5 1.3 5.5 4.2"/></svg></div><h3>Espaces communautaires</h3><p>Rejoins des espaces privés avec d'autres couples pour partager, t'inspirer, et ne pas naviguer seul.</p></article><article class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg></div><h3>Découverte de profils</h3><p>Rencontre d'autres couples qui te ressemblent. Échange, connecte-toi, élargis ton cercle à ton rythme.</p></article></div>
+</section>
+
+<section class="section band" aria-labelledby="dans-lapp">
+  <div class="wrap">
+    <p class="eyebrow">Dans l'app</p>
+    <h2 class="h2" id="dans-lapp">Vois avant d'essayer</h2>
+    <p class="lead">Quatre écrans, quatre façons de nourrir ta relation au quotidien.</p>
+    <div class="divider"></div>
+    <div class="screens"><figure class="screen-item reveal"><div class="phone s"><div class="phone-screen"><img src="/assets/app/defi.webp" width="540" height="1200" alt="Le défi du jour dans Kynkr" loading="lazy" decoding="async"></div></div><figcaption>Un défi à relever chaque jour. Ensemble.</figcaption></figure><figure class="screen-item reveal"><div class="phone s"><div class="phone-screen"><img src="/assets/app/carnet.webp" width="540" height="1200" alt="Un souvenir dans le carnet de Kynkr" loading="lazy" decoding="async"></div></div><figcaption>Tes souvenirs, toujours là quand tu en as besoin.</figcaption></figure><figure class="screen-item reveal"><div class="phone s"><div class="phone-screen"><img src="/assets/app/espaces.webp" width="540" height="1200" alt="La liste des espaces communautaires" loading="lazy" decoding="async"></div></div><figcaption>Des espaces privés avec d'autres couples.</figcaption></figure><figure class="screen-item reveal"><div class="phone s"><div class="phone-screen"><img src="/assets/app/chat.webp" width="540" height="1200" alt="La discussion d&#x27;un espace" loading="lazy" decoding="async"></div></div><figcaption>Des échanges vrais, dans un cadre bienveillant.</figcaption></figure></div>
+    <div class="poll-block reveal">
+      <div>
+        <p class="eyebrow left">Ta voix compte</p>
+        <h3 class="poll-title">Tu guides ce qu'on construit.</h3>
+        <p class="poll-desc">Des sondages réguliers pour que chacun puisse orienter les prochaines fonctionnalités. Tu choisis de rester anonyme ou non, et tu peux changer d'avis quand tu veux.</p>
       </div>
-      <h3>Bientôt révélé</h3>
-      <p>Rejoins la liste d'attente pour être parmi les premiers à découvrir ce que Kynkr a préparé pour toi.</p>
-    </div>
-    <div class="feature-card anim-in d2">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zM2 8l10 7 10-7"/></svg>
+      <div class="poll-phones">
+        <figure><div class="phone s"><div class="phone-screen"><img src="/assets/app/sondage-avant.webp" width="540" height="1200" alt="Un sondage avant le vote" loading="lazy" decoding="async"></div></div><figcaption>Avant</figcaption></figure>
+        <figure><div class="phone s"><div class="phone-screen"><img src="/assets/app/sondage-apres.webp" width="540" height="1200" alt="Le même sondage après le vote, avec les résultats" loading="lazy" decoding="async"></div></div><figcaption>Après</figcaption></figure>
       </div>
-      <h3>Accès beta anticipé</h3>
-      <p>Les premiers inscrits bénéficieront d'un accès exclusif et d'avantages réservés aux pionniers.</p>
     </div>
-    <div class="feature-card anim-in d3">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="url(#kGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <h3>Conçu pour les couples</h3>
-      <p>Que tu sois en couple, célibataire ou libertin, Kynkr a quelque chose pour toi. La suite arrive bientôt.</p>
+  </div>
+</section>
+
+<section class="section wrap" id="discretion">
+  <p class="eyebrow">Discrétion</p>
+  <h2 class="h2">Ton intimité t'appartient</h2>
+  <p class="lead">Kynkr est pensé pour qu'on s'y sente en sécurité, même quand quelqu'un regarde par-dessus ton épaule.</p>
+  <div class="divider"></div>
+  <ul class="points"><li class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><h3>Un verrou à toi</h3><p>Un code PIN ou ta biométrie pour entrer dans l'app. Personne d'autre que toi n'ouvre la porte.</p></li><li class="card reveal"><div class="icon-box sec"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7h7M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/></svg></div><h3>Un mode discret</h3><p>L'app peut se déguiser en calculatrice qui fonctionne vraiment. Rien ne laisse deviner ce qu'elle cache.</p></li><li class="card reveal"><div class="icon-box "><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l-4 3 4 3M15 13l4 3-4 3M5 8h9a4 4 0 0 1 0 8M19 16H10"/></svg></div><h3>Un geste, et tout se range</h3><p>Secoue ton téléphone&nbsp;: un écran neutre prend aussitôt la place. Tu reviens quand tu veux, avec ton code.</p></li><li class="card reveal"><div class="icon-box sec"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3l18 18M10.6 6.2A9.8 9.8 0 0 1 12 6c5 0 8.5 4.2 9.5 6-.4.8-1.4 2.2-2.9 3.5M6.3 7.7C4.4 9 3.2 10.8 2.5 12c1 1.8 4.5 6 9.5 6 1.6 0 3-.4 4.2-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></div><h3>Captures d'écran bloquées</h3><p>Elles sont bloquées par défaut. Tu choisis si tu les autorises, jamais l'inverse.</p></li></ul>
+</section>
+
+<section class="section band">
+  <div class="wrap">
+    <p class="eyebrow">Gratuit pour commencer</p>
+    <h2 class="h2">Va plus loin quand tu le souhaites</h2>
+    <p class="lead">L'essentiel de Kynkr est gratuit. Premium, l'offre Couple et le VIP à vie débloquent plus d'espace, plus d'options et un accès anticipé aux nouveautés.</p>
+    <p class="lead"><a class="btn" href="/premium">Découvrir les offres</a></p>
+  </div>
+</section>
+
+<section class="section wrap" aria-labelledby="cta-final">
+  <div class="poll-block reveal">
+    <div>
+      <p class="eyebrow left">Bientôt</p>
+      <h2 class="poll-title" id="cta-final">Sois prévenu·e dès l'ouverture.</h2>
+      <p class="poll-desc">Laisse ton adresse&nbsp;: on t'écrit une seule fois, quand Kynkr ouvre ses portes.</p>
     </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">Kynkr</div>
-    <div>© 2026 Kynkr — Tous droits réservés</div>
-    <div class="footer-links">
-      <a href="/premium">Premium</a>
-      <a href="#">CGU</a>
-      <a href="#">Confidentialité</a>
-      <a href="mailto:contact@kynkr.app">Contact</a>
+    <div>
+      <form class="waitlist" data-source="contact" novalidate>
+  <label class="sr-only" for="email-contact">Ton adresse email</label>
+  <input class="waitlist-input" id="email-contact" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Ton adresse email" required>
+  <input class="waitlist-trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <button class="btn" type="submit">Me prévenir</button>
+</form>
+<p class="waitlist-status" role="status" aria-live="polite"></p>
+      <p class="waitlist-note">En t'inscrivant, tu acceptes que ton adresse serve uniquement à t'avertir de l'ouverture. <a href="/privacy#liste-attente">En savoir plus</a>.</p>
     </div>
-  </footer>
-
-  <script>
-    // ══ EMBER PARTICLES (flammes ambient, vanilla canvas, 0 dep) ══
-    (() => {
-      const canvas = document.getElementById('emberCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return;
-
-      let W = canvas.width = window.innerWidth;
-      let H = canvas.height = window.innerHeight;
-      window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
-
-      const MAX = Math.min(18, Math.floor(W / 90));
-      const particles = [];
-
-      function spawn() {
-        return {
-          x: Math.random() * W,
-          y: H + 10,
-          vy: 0.3 + Math.random() * 0.9,
-          vx: (Math.random() - 0.5) * 0.25,
-          r: 1.2 + Math.random() * 2.2,
-          life: 0,
-          maxLife: 260 + Math.random() * 180,
-          hue: Math.random() < 0.5 ? 'primary' : 'secondary',
-        };
-      }
-
-      for (let i = 0; i < MAX; i++) {
-        const p = spawn();
-        p.y = Math.random() * H;
-        p.life = Math.random() * p.maxLife;
-        particles.push(p);
-      }
-
-      function tick() {
-        ctx.clearRect(0, 0, W, H);
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.y -= p.vy;
-          p.x += p.vx;
-          p.life++;
-          const t = p.life / p.maxLife;
-          const alpha = t < 0.15 ? t / 0.15 : (1 - t) * 0.85;
-          const color = p.hue === 'primary' ? '237,75,97' : '254,110,68';
-          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
-          glow.addColorStop(0, `rgba(${color},${alpha * 0.9})`);
-          glow.addColorStop(0.4, `rgba(${color},${alpha * 0.3})`);
-          glow.addColorStop(1, `rgba(${color},0)`);
-          ctx.fillStyle = glow;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = `rgba(${color},${alpha})`;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-          if (p.life > p.maxLife || p.y < -10) particles[i] = spawn();
-        }
-        requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    })();
-
-    // ══ PAGE EXIT — fade flamme (180ms) sur navigation interne ══
-    (() => {
-      document.addEventListener('click', (e) => {
-        const a = e.target.closest('a');
-        if (!a) return;
-        const href = a.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
-        if (a.target === '_blank') return;
-        e.preventDefault();
-        document.body.classList.add('page-out');
-        setTimeout(() => { window.location.href = href; }, 180);
-      });
-    })();
-  </script>
-
+  </div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a href="/" class="logo" aria-label="Kynkr, accueil">Kynk<span>r</span></a>
+      <p class="footer-about">L'application des couples qui prennent soin de leur relation. Réservée aux personnes majeures.</p>
+    </div>
+    <div><h4>Produit</h4><ul><li><a href="/#fonctionnalites">Fonctionnalités</a></li><li><a href="/#discretion">Discrétion</a></li><li><a href="/premium">Premium</a></li></ul></div>
+    <div><h4>Légal</h4><ul><li><a href="/privacy">Confidentialité</a></li><li><a href="/cgu">Conditions d'utilisation</a></li><li><a href="/suppression-compte">Supprimer mon compte</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:contact@kynkr.app">contact@kynkr.app</a></li><li><a href="/contact">Nous écrire</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Kynkr — Tous droits réservés</span><span>Kynkr est réservé aux adultes (18 ans et plus).</span></div>
+</footer>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
