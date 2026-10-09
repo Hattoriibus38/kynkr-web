@@ -61,7 +61,8 @@ def pied():
   </div>
   <div class="footer-bottom"><span>© 2026 Kynkr — Tous droits réservés</span><span>Kynkr est réservé aux adultes (18 ans et plus).</span></div>
 </footer>
-<script src="/assets/site.js" defer></script>'''
+<script src="/assets/site.js" defer></script>
+<script defer src="/_vercel/insights/script.js"></script>'''
 
 
 def tete(titre, description, chemin, og_titre=None, noindex=False):
@@ -440,6 +441,12 @@ def confidentialite():
       <p>Si tu laisses ton adresse e-mail sur kynkr.app pour être prévenu·e de l'ouverture, elle est enregistrée avec la date d'inscription et une empreinte non réversible de ton adresse IP (utilisée uniquement pour limiter les abus). Elle sert exclusivement à t'avertir de l'ouverture de l'application. Base légale : ton consentement. Elle est supprimée à l'ouverture si tu ne crées pas de compte, ou sur simple demande à <a href="mailto:contact@kynkr.app">contact@kynkr.app</a>.</p>
     </div>
 
+    <div class="section" id="audience">
+      <h2>Mesure d'audience du site</h2>
+      <div class="section-divider"></div>
+      <p>Le site kynkr.app utilise Vercel Web Analytics pour compter les visites (pages vues, pays, type d'appareil). Cet outil n'utilise <strong>aucun cookie</strong>, ne dépose rien sur ton appareil et ne te suit pas d'un site à l'autre : aucune donnée personnelle n'est conservée. Base légale : intérêt légitime à connaître la fréquentation du site.</p>
+    </div>
+
     <div class="section" id="sondages">
       <h2>Sondages dans l'application</h2>
       <div class="section-divider"></div>
@@ -452,7 +459,7 @@ def confidentialite():
     c = c.replace('''          <tr>
             <td>Stripe</td>''', '''          <tr>
             <td>Vercel</td>
-            <td>Hébergement du site kynkr.app</td>
+            <td>Hébergement du site kynkr.app et mesure d'audience sans cookie</td>
             <td>USA / UE</td>
           </tr>
           <tr>
